@@ -25,6 +25,7 @@ public:
 
     auto startIt = m_map.lower_bound(keyBegin);		// O(log(n))
     auto finishIt = m_map.lower_bound(keyEnd);		// O(log(n))
+    auto isFinishIn = m_map.find(keyEnd) == m_map.end();
 
     auto preBeginVal = startIt == m_map.begin()? m_valBegin : std::prev(startIt)->second;
 
@@ -40,8 +41,8 @@ public:
 	while(it != finishIt) {				// O(distance(start, finish))
 	    auto nextIt = std::next(it);
 	    if (nextIt == finishIt) {
-		if (nextIt->first == keyEnd)
-		  preEndVal = std::next(it)->second;
+		if (!isFinishIn)
+		  preEndVal = nextIt->second;
 		else
 		  preEndVal = it->second;               // construction & assignments
 	    }
@@ -77,7 +78,7 @@ int main(int argc, char **argv) {
   mymap.assign(13, 17, 'E');
   mymap.assign(19, 21, 'F');
 
-  mymap.assign(14, 20, 'E');
+  mymap.assign(6, 20, 'Z');
 
   std::cout << std::endl;
   for(int i = -3; i < 30; i++) {
