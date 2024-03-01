@@ -38,14 +38,18 @@ public:
 	V preEndVal = preBeginVal;
 	auto it = startIt;
 	while(it != finishIt) {				// O(distance(start, finish))
-	    if (std::next(it) == finishIt)
-	      preEndVal = it->second;                   // construction & assignments
+	    auto nextIt = std::next(it);
+	    if (nextIt == finishIt) {
+		if (nextIt->first == keyEnd)
+		  preEndVal = std::next(it)->second;
+		else
+		  preEndVal = it->second;               // construction & assignments
+	    }
 	    it = m_map.erase(it);			// amortized O(1)
 	}
 	auto isBeginOk = preBeginVal != val;
-	auto isFinishOk = finishIt == m_map.end()
-	    || (!isBeginOk && preBeginVal != preEndVal)
-	    || (isBeginOk && finishIt->second != preEndVal);
+	auto isFinishOk = (isBeginOk && std::prev(finishIt)->second != preEndVal)
+			|| (!isBeginOk && preBeginVal != preEndVal);
 
 	if (isBeginOk)
 	  m_map[keyBegin] = val;			// O(log(n))
@@ -73,7 +77,7 @@ int main(int argc, char **argv) {
   mymap.assign(13, 17, 'E');
   mymap.assign(19, 21, 'F');
 
-  mymap.assign(14, 18, 'E');
+  mymap.assign(14, 20, 'E');
 
   std::cout << std::endl;
   for(int i = -3; i < 30; i++) {
@@ -84,7 +88,7 @@ int main(int argc, char **argv) {
 
   std::cout << std::endl;
   for(auto it : mymap.m_map) {
-      std::cout << " " << it.first << " " << it.second << " ";
+      std::cout << " " << it.first << " " << it.second << "  ";
   }
 
   std::cout << std::endl << std::endl;
