@@ -12,24 +12,24 @@ LIBS = -ldl -lrt -lm -lz -lopenblaso64 -lgfortran -lquadmath -lboost_system -lbo
 USER_LIBS = -L/home/andoras/installs/OpenBLAS/lib -L/home/andoras/installs/boost_1_80_0/lib -L/usr/lib64/openmpi/lib
 CFLAGS_BASIC = -std=c++17 -m64 -fmessage-length=0 -pthread -fopenmp -fopenmp-simd
 
-OBJS = technical-assessment.o
+OBJS = technical.o
 
 ifeq ($(BUILD_MODE),run)
 	CFLAGS += $(CFLAGS_BASIC) -O2
 else ifeq ($(BUILD_MODE),linuxtools)
 	CFLAGS += $(CFLAGS_BASIC) -g -pg -fprofile-arcs -ftest-coverage
 	LDFLAGS += -pg -fprofile-arcs -ftest-coverage
-	EXTRA_CLEAN += technical-assessment.gcda technical-assessment.gcno $(PROJECT_ROOT)gmon.out
-	EXTRA_CMDS = rm -rf technical-assessment.gcda
+	EXTRA_CLEAN += technical.gcda technical.gcno $(PROJECT_ROOT)gmon.out
+	EXTRA_CMDS = rm -rf technical.gcda
 else #ifeq ($(BUILD_MODE),debug)
 	CFLAGS += $(CFLAGS_BASIC) -g
 endif
 
 #$(error Build mode $(BUILD_MODE) not supported by this Makefile)
 
-all:	technical-assessment
+all:	technical
 
-technical-assessment:	$(OBJS)
+technical:	$(OBJS)
 	$(CXX) $(USER_LIBS) $(LDFLAGS) -o $@ $^ $(LIBS)
 	$(EXTRA_CMDS) 
 
@@ -40,4 +40,4 @@ technical-assessment:	$(OBJS)
 	$(CC) -c $(PREPROC) $(INCLUDE) $(CFLAGS) $(CPPFLAGS) -o $@ $<
 
 clean:
-	rm -fr technical-assessment $(OBJS) $(EXTRA_CLEAN)
+	rm -fr technical $(OBJS) $(EXTRA_CLEAN)
