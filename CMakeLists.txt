@@ -12,4 +12,4 @@ endif()
 project ("technical-assessment")
 
 # Include sub-projects.
-add_subdirectory ("Technical")
+add_subdirectory ("Tech")

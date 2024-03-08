@@ -39,7 +39,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug"
+			"value" : "c:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -123,11 +123,11 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "No help, variable specified on the command line."
+					"value" : "CXX compiler"
 				}
 			],
 			"type" : "STRING",
-			"value" : "cl.exe"
+			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/cl.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_FLAGS",
@@ -235,11 +235,11 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "No help, variable specified on the command line."
+					"value" : "C compiler"
 				}
 			],
 			"type" : "STRING",
-			"value" : "cl.exe"
+			"value" : "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/cl.exe"
 		},
 		{
 			"name" : "CMAKE_C_FLAGS",
@@ -467,7 +467,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -527,7 +527,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/amuolo/source/repos/amuolo/technical-assessment"
+			"value" : "C:/Users/amuolo/source/repos/technical-assessment"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -539,7 +539,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Users/amuolo/Source/Repos/amuolo/technical-assessment/out/install/x64-debug"
+			"value" : "C:/Users/amuolo/source/repos/technical-assessment/out/install/x64-debug"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -1075,7 +1075,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug"
+			"value" : "C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug"
 		},
 		{
 			"name" : "technical-assessment_IS_TOP_LEVEL",
@@ -1099,7 +1099,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/amuolo/source/repos/amuolo/technical-assessment"
+			"value" : "C:/Users/amuolo/source/repos/technical-assessment"
 		}
 	],
 	"kind" : "cache",

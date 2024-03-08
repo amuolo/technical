@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/amuolo/source/repos/amuolo/technical-assessment
+# Install script for directory: C:/Users/amuolo/source/repos/technical-assessment
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/amuolo/Source/Repos/amuolo/technical-assessment/out/install/x64-debug")
+  set(CMAKE_INSTALL_PREFIX "C:/Users/amuolo/source/repos/technical-assessment/out/install/x64-debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/Technical/cmake_install.cmake")
+  include("C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug/Tech/cmake_install.cmake")
 
 endif()
 
@@ -46,5 +46,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

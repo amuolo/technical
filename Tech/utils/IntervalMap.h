@@ -3,7 +3,7 @@
 #ifndef INCLUDE_UTILS_INTERVALMAP_H_
 #define INCLUDE_UTILS_INTERVALMAP_H_
 
-#include "../Technical.h"
+#include "../Tech.h"
 #include "Utils.h"
 
 template <typename K, typename V>

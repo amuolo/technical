@@ -39,7 +39,7 @@ events:
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.obj"
       
       The C compiler identification is MSVC, found in:
-        C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/CMakeFiles/3.27.2-msvc1/CompilerIdC/CMakeCCompilerId.exe
+        C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug/CMakeFiles/3.27.2-msvc1/CompilerIdC/CMakeCCompilerId.exe
       
   -
     kind: "message-v1"
@@ -51,7 +51,7 @@ events:
     message: |
       Detecting C compiler /showIncludes prefix:
         main.c
-        Note: including file: C:\\Users\\amuolo\\source\\repos\\amuolo\\technical-assessment\\out\\build\\x64-debug\\CMakeFiles\\ShowIncludes\\foo.h
+        Note: including file: C:\\Users\\amuolo\\source\\repos\\technical-assessment\\out\\build\\x64-debug\\CMakeFiles\\ShowIncludes\\foo.h
         
       Found prefix "Note: including file: "
   -
@@ -85,7 +85,7 @@ events:
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.obj"
       
       The CXX compiler identification is MSVC, found in:
-        C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/CMakeFiles/3.27.2-msvc1/CompilerIdCXX/CMakeCXXCompilerId.exe
+        C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug/CMakeFiles/3.27.2-msvc1/CompilerIdCXX/CMakeCXXCompilerId.exe
       
   -
     kind: "message-v1"
@@ -97,7 +97,7 @@ events:
     message: |
       Detecting CXX compiler /showIncludes prefix:
         main.c
-        Note: including file: C:\\Users\\amuolo\\source\\repos\\amuolo\\technical-assessment\\out\\build\\x64-debug\\CMakeFiles\\ShowIncludes\\foo.h
+        Note: including file: C:\\Users\\amuolo\\source\\repos\\technical-assessment\\out\\build\\x64-debug\\CMakeFiles\\ShowIncludes\\foo.h
         
       Found prefix "Note: including file: "
   -
@@ -109,8 +109,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-zda637"
-      binary: "C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-zda637"
+      source: "C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-258b1y"
+      binary: "C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-258b1y"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
       CMAKE_C_FLAGS_DEBUG: "/MDd /Ob0 /Od /RTC1"
@@ -120,11 +120,11 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-zda637'
+        Change Dir: 'C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-258b1y'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_231ff
-        [1/2] C:\\PROGRA~1\\MICROS~3\\2022\\ENTERP~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS /W3  /MDd /Ob0 /Od /RTC1 -Zi /showIncludes /FoCMakeFiles\\cmTC_231ff.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_231ff.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.27\\Modules\\CMakeCCompilerABI.c"
-        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_231ff.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\2022\\ENTERP~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_231ff.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_231ff.exe /implib:cmTC_231ff.lib /pdb:cmTC_231ff.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_683b6
+        [1/2] C:\\PROGRA~1\\MICROS~3\\2022\\ENTERP~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS /W3  /MDd /Ob0 /Od /RTC1 -Zi /showIncludes /FoCMakeFiles\\cmTC_683b6.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_683b6.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.27\\Modules\\CMakeCCompilerABI.c"
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_683b6.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\2022\\ENTERP~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_683b6.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_683b6.exe /implib:cmTC_683b6.lib /pdb:cmTC_683b6.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -136,8 +136,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-j5rpjv"
-      binary: "C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-j5rpjv"
+      source: "C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-pccc9o"
+      binary: "C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-pccc9o"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/MDd /Ob0 /Od /RTC1"
@@ -147,11 +147,11 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-j5rpjv'
+        Change Dir: 'C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-pccc9o'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_44574
-        [1/2] C:\\PROGRA~1\\MICROS~3\\2022\\ENTERP~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /MDd /Ob0 /Od /RTC1 -Zi /showIncludes /FoCMakeFiles\\cmTC_44574.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_44574.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.27\\Modules\\CMakeCXXCompilerABI.cpp"
-        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_44574.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\2022\\ENTERP~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_44574.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_44574.exe /implib:cmTC_44574.lib /pdb:cmTC_44574.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" -v cmTC_5f499
+        [1/2] C:\\PROGRA~1\\MICROS~3\\2022\\ENTERP~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /MDd /Ob0 /Od /RTC1 -Zi /showIncludes /FoCMakeFiles\\cmTC_5f499.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_5f499.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.27\\Modules\\CMakeCXXCompilerABI.cpp"
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_5f499.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~3\\2022\\ENTERP~1\\VC\\Tools\\MSVC\\1438~1.331\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_5f499.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_5f499.exe /implib:cmTC_5f499.lib /pdb:cmTC_5f499.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
 ...

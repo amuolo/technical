@@ -1,7 +1,7 @@
 ﻿// Technical.cpp : Defines the entry point for the application.
 //
 
-#include "Technical.h"
+#include "Tech.h"
 #include "utils/IntervalMap.h"
 #include "utils/Utils.h"
 

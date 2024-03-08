@@ -3,7 +3,7 @@
 #ifndef INCLUDE_UTILS_H_
 #define INCLUDE_UTILS_H_
 
-#include "../Technical.h"
+#include "../Tech.h"
 
 template<class T>
 std::vector<T> parse_input_line()
