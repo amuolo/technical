@@ -1,0 +1,5 @@
+C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/CMakeFiles/edit_cache.dir
+C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/Technical/CMakeFiles/Technical.dir
+C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/Technical/CMakeFiles/edit_cache.dir
+C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/Technical/CMakeFiles/rebuild_cache.dir
