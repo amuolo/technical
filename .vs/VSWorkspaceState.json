@@ -1,8 +1,4 @@
 {
-  "ExpandedNodes": [
-    ""
-  ],
-  "PreviewInSolutionExplorer": false,
   "OutputFoldersPerTargetSystem": {
     "Local Machine": [
       "out\\build\\x64-debug",
@@ -14,5 +10,13 @@
       "out\\build\\x86-release",
       "out\\install\\x86-release"
     ]
-  }
+  },
+  "ExpandedNodes": [
+    "",
+    "\\Technical",
+    "\\Technical\\src",
+    "\\Technical\\test",
+    "\\Technical\\utils"
+  ],
+  "PreviewInSolutionExplorer": false
 }
