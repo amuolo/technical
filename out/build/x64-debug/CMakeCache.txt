@@ -81,10 +81,10 @@ CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=/debug /INCREMENTAL
 CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=
 
 //Value Computed by CMake.
-CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=C:/Users/amuolo/source/repos/amuolo/technical-assessment/out/build/x64-debug/CMakeFiles/pkgRedirects
+CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=C:/Users/amuolo/source/repos/technical-assessment/out/build/x64-debug/CMakeFiles/pkgRedirects
 
 //No help, variable specified on the command line.
-CMAKE_INSTALL_PREFIX:PATH=C:/Users/amuolo/Source/Repos/amuolo/technical-assessment/out/install/x64-debug
+CMAKE_INSTALL_PREFIX:PATH=C:/Users/amuolo/source/repos/technical-assessment/out/install/x64-debug
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/link.exe
