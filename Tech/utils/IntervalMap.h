@@ -8,11 +8,13 @@
 
 template <typename K, typename V>
 class interval_map {
-	friend void IntervalMapTest();
+	friend static class IntervalMapTest;
 
-public:
+private:
 	V m_valBegin;
 	std::map<K, V> m_map;
+
+public:
 
 	interval_map(V const& val) : m_valBegin(val) {}
 
