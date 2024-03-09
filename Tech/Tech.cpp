@@ -4,13 +4,13 @@
 #include "Tech.h"
 #include "utils/IntervalMap.h"
 #include "utils/Utils.h"
-#include "test/IntervalMapTest.h"
+#include "test/Tests.h"
 
 using namespace std;
 
 int main()
 {
-	IntervalMapTest::test1();
+	run_all_tests();
 
 	std::cout << std::endl << std::endl;
 

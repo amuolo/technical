@@ -1,4 +1,7 @@
 #include "IntervalMapTest.h"
+#include "Utils.h"
+
+#include <assert.h>
 
 template<class K, class V>
 void IntervalMapTest::print(const interval_map<K, V>& mymap) {
@@ -16,7 +19,20 @@ void IntervalMapTest::print(const interval_map<K, V>& mymap) {
 	}
 }
 
-std::string IntervalMapTest::test1() {
+std::string IntervalMapTest::getMap(const interval_map<int, char>& mymap) {
+	std::string r = "";
+	for (auto it : mymap.m_map) {
+		r += " " + std::to_string(it.first) + " " + it.second + " ";
+	}
+	return r;
+}
+
+void IntervalMapTest::eval() {
+	std::cout << "  --- IntervalMap Tests --- \n" << std::endl;
+	long_intrusion_test();
+}
+
+void IntervalMapTest::long_intrusion_test() {
 
 	interval_map<int, char> mymap('A');
 
@@ -28,7 +44,5 @@ std::string IntervalMapTest::test1() {
 
 	mymap.assign(6, 20, 'Z');
 
-	print(mymap);
-
-	return "ok";
+	assertion(getMap(mymap) == " 1 B  3 A  5 C  6 Z  20 F  21 A ", std::source_location::current().function_name());
 };
