@@ -88,5 +88,6 @@ void IntervalMapTest::non_default_constructible_test() {
 	mapping.assign(1, 3, myObject(2));
 	mapping.assign(5, 7, myObject(4));
 
+	assertion(1, 1);
 }
 

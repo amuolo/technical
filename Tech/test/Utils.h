@@ -12,20 +12,25 @@ void assertion(std::string funcName) {
 template <class T>
 void assertion(T value, T benchmark) {
 	if (value != benchmark) { 
-		std::cout << "   failed" << std::endl; 
-		return;
+		std::stringstream s;
+		
+		if constexpr (std::is_same_v<T, std::string> || std::is_integral_v<T>) {
+			s << std::setw(15) << "value: " << value << std::endl
+			  << std::setw(15) << "benchmark: " << benchmark << std::endl;
+		}
+
+		throw std::exception(s.str().c_str());
 	}
-	
-	std::cout << "   ok" << std::endl;
 }
 
 void eval_tests(std::vector<std::function<void()>> tests) {
 	for (auto& test : tests) {
 		try {
 			test();
+			std::cout << "   ok" << std::endl;
 		}
 		catch (std::exception e) {
-			std::cout << "   failed \n\n" << e.what() << std::endl << std::endl;
+			std::cout << "   failed \n\n" << e.what() << std::endl;
 		}
 	}
 }
