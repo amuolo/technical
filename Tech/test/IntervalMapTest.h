@@ -14,7 +14,10 @@ public:
 
 	static void eval();
 
+	static void short_intrusion_test();
 	static void long_intrusion_test();
+
+	static void non_default_constructible_test();
 };
 
 

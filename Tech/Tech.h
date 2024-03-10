@@ -3,8 +3,8 @@
 
 #pragma once
 
-#ifndef INCLUDE_TECHNICAL_H_
-#define INCLUDE_TECHNICAL_H_
+#ifndef INCLUDE_TECH_H_
+#define INCLUDE_TECH_H_
 
 #include <cstdio>
 #include <iostream>
@@ -12,7 +12,7 @@
 #include <sstream>
 #include <vector>
 #include <map>
-
+#include <functional>
 #include <source_location>
 
 

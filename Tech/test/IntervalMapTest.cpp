@@ -29,20 +29,64 @@ std::string IntervalMapTest::getMap(const interval_map<int, char>& mymap) {
 
 void IntervalMapTest::eval() {
 	std::cout << "  --- IntervalMap Tests --- \n" << std::endl;
-	long_intrusion_test();
+
+	eval_tests({
+		short_intrusion_test,
+		long_intrusion_test,
+		non_default_constructible_test
+		}
+	);
 }
 
-void IntervalMapTest::long_intrusion_test() {
+void IntervalMapTest::short_intrusion_test() {
+	assertion(std::source_location::current().function_name());
 
-	interval_map<int, char> mymap('A');
+	auto mapping = interval_map<int, char>('A');
 
-	mymap.assign(1, 3, 'B');
-	mymap.assign(5, 7, 'C');
-	mymap.assign(9, 11, 'D');
-	mymap.assign(13, 17, 'E');
-	mymap.assign(19, 21, 'F');
+	mapping.assign(1, 3, 'B');
+	mapping.assign(5, 7, 'C');
+	mapping.assign(9, 11, 'D');
+	mapping.assign(13, 17, 'E');
+	mapping.assign(19, 21, 'F');
 
-	mymap.assign(6, 20, 'Z');
+	mapping.assign(13, 14, 'Z');
 
-	assertion(getMap(mymap) == " 1 B  3 A  5 C  6 Z  20 F  21 A ", std::source_location::current().function_name());
+	assertion(getMap(mapping), std::string(" 1 B  3 A  5 C  7 A  9 D  11 A  13 Z  14 E  17 A  19 F  21 A "));
 };
+
+void IntervalMapTest::long_intrusion_test() {
+	assertion(std::source_location::current().function_name());
+
+	auto mapping = interval_map<int, char>('A');
+
+	mapping.assign(1, 3, 'B');
+	mapping.assign(5, 7, 'C');
+	mapping.assign(9, 11, 'D');
+	mapping.assign(13, 17, 'E');
+	mapping.assign(19, 21, 'F');
+
+	mapping.assign(6, 20, 'Z');
+
+	assertion(getMap(mapping), std::string(" 1 B  3 A  5 C  6 Z  20 F  21 A "));
+};
+
+void IntervalMapTest::non_default_constructible_test() {
+	assertion(std::source_location::current().function_name());
+
+	class myObject {
+	public:
+		int myInt;
+		myObject(int i) { myInt = i; };
+
+		bool operator== (myObject item) { return item.myInt == this->myInt; }
+	};
+
+	auto valBegin = myObject(1);
+
+	auto mapping = interval_map<int, myObject>(valBegin);
+
+	mapping.assign(1, 3, myObject(2));
+	mapping.assign(5, 7, myObject(4));
+
+}
+

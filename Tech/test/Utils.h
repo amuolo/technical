@@ -5,10 +5,29 @@
 
 #include "../utils/Utils.h"
 
-void assertion(bool ok, std::string funcName) {
-	std::cout << std::setw(60) << funcName;
-	if (!ok) { std::cout << "   failed" << std::endl; }
-	else { std::cout << "   ok" << std::endl; }
+void assertion(std::string funcName) {
+	std::cout << std::setw(80) << funcName;
+}
+
+template <class T>
+void assertion(T value, T benchmark) {
+	if (value != benchmark) { 
+		std::cout << "   failed" << std::endl; 
+		return;
+	}
+	
+	std::cout << "   ok" << std::endl;
+}
+
+void eval_tests(std::vector<std::function<void()>> tests) {
+	for (auto& test : tests) {
+		try {
+			test();
+		}
+		catch (std::exception e) {
+			std::cout << "   failed \n\n" << e.what() << std::endl << std::endl;
+		}
+	}
 }
 
 #endif
