@@ -1,9 +1,10 @@
 ﻿// Technical.cpp : Defines the entry point for the application.
 //
 
-#include "Tech.h"
+#include "utils/StandardLibs.h"
 #include "utils/IntervalMap.h"
-#include "utils/Utils.h"
+#include "utils/InputOutput.h"
+
 #include "test/Tests.h"
 
 using namespace std;

@@ -3,10 +3,12 @@
 #ifndef INCLUDE_TEST_UTILS_H_
 #define INCLUDE_TEST_UTILS_H_
 
-#include "../utils/Utils.h"
+#include "../utils/StandardLibs.h"
 
 void assertion(std::string funcName) {
-	std::cout << std::setw(80) << funcName;
+	std::regex re("void|__cdecl");
+	auto name = std::regex_replace(funcName, re, "");
+	std::cout << std::left << std::setw(70) << name;
 }
 
 template <class T>
@@ -26,6 +28,7 @@ void assertion(T value, T benchmark) {
 void eval_tests(std::vector<std::function<void()>> tests) {
 	for (auto& test : tests) {
 		try {
+			//assertion(test.target_type().name());
 			test();
 			std::cout << "   ok" << std::endl;
 		}

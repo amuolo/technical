@@ -14,10 +14,19 @@ public:
 
 	static void eval();
 
+	static void insert_test();
+	static void insert_bis_test();
+	static void insert_before_test();
+	static void insert_before_bis_test();
+	static void insert_before_tricky_test();
+	static void insert_complex_test();
+	static void canonicity_simple_test();
+	static void canonicity_inject_test();
+	static void canonicity_test();
 	static void short_intrusion_test();
 	static void long_intrusion_test();
 
-	static void non_default_constructible_test();
+	static void type_requirements_test();
 };
 
 

@@ -1,9 +1,9 @@
 #pragma once
 
-#ifndef INCLUDE_UTILS_H_
-#define INCLUDE_UTILS_H_
+#ifndef INCLUDE_UTILS_INPUTOUTPUT_H_
+#define INCLUDE_UTILS_INPUTOUTPUT_H_
 
-#include "../Tech.h"
+#include "StandardLibs.h"
 
 template<class T>
 std::vector<T> parse_input_line()
@@ -31,5 +31,10 @@ inline void print(std::vector<std::string> arr)
     for (auto a : arr)
         std::cout << a << std::endl;
 };
+
+inline std::string print_caller_name(const std::source_location& location = std::source_location::current())
+{
+    return location.function_name();
+}
 
 #endif
