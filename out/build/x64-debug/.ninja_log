@@ -1,9 +1,0 @@
-# ninja log v5
-31	1140	7318604983692985	Tech/CMakeFiles/Tech.dir/Tech.cpp.obj	fbc02699d4259523
-1401	1570	7318604987774965	Tech/Tech.exe	f3e96384ab27d779
-36	1401	7318604986357352	Tech/CMakeFiles/Tech.dir/test/IntervalMapTest.cpp.obj	4f6a982096b54182
-24	43	0	clean	21a4d0550fd2b6b1
-61	554	7318614042732644	build.ninja	e74df384a68cde47
-16	1069	7318615700955169	Tech/CMakeFiles/Tech.dir/Tech.cpp.obj	fbc02699d4259523
-20	1310	7318615703338023	Tech/CMakeFiles/Tech.dir/test/IntervalMapTest.cpp.obj	4f6a982096b54182
-1310	1533	7318615705060248	Tech/Tech.exe	f3e96384ab27d779
