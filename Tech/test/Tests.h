@@ -5,10 +5,10 @@
 
 #include "IntervalMapTest.h"
 
-void run_all_tests() {
+std::tuple<int, int> run_all_tests() {
 	std::cout << std::endl << "----- RUN ALL TESTS ----- \n" << std::endl;
 
-	IntervalMapTest::eval();
+	return IntervalMapTest::eval();
 };
 
 

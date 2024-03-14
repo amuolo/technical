@@ -4,6 +4,7 @@
 #define INCLUDE_TEST_UTILS_H_
 
 #include "../utils/StandardLibs.h"
+#include "../utils/Arithmetics.h"
 
 void assertion(std::string funcName) {
 	std::regex re("void|__cdecl");
@@ -25,17 +26,19 @@ void assertion(T value, T benchmark) {
 	}
 }
 
-void eval_tests(std::vector<std::function<void()>> tests) {
+std::tuple<int, int> eval_tests(std::vector<std::function<void()>> tests) {
+	int num_succeeded = 0;
 	for (auto& test : tests) {
 		try {
-			//assertion(test.target_type().name());
 			test();
+			num_succeeded++;
 			std::cout << "   ok" << std::endl;
 		}
 		catch (std::exception e) {
 			std::cout << "   failed \n\n" << e.what() << std::endl;
 		}
 	}
+	return std::make_pair(num_succeeded, tests.size()) + std::make_pair(1, 1);
 }
 
 #endif

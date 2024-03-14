@@ -12,7 +12,7 @@ public:
 
 	static std::string getMap(const interval_map<int, char>& mymap);
 
-	static void eval();
+	static std::tuple<int, int> eval();
 
 	static void insert_test();
 	static void insert_bis_test();

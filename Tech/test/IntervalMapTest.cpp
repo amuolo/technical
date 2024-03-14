@@ -27,10 +27,10 @@ std::string IntervalMapTest::getMap(const interval_map<int, char>& mymap) {
 	return r;
 }
 
-void IntervalMapTest::eval() {
+std::tuple<int, int> IntervalMapTest::eval() {
 	std::cout << "  --- IntervalMap Tests --- \n" << std::endl;
 
-	eval_tests({
+	return eval_tests({
 		insert_test,
 		insert_bis_test,
 		insert_before_test,
@@ -47,7 +47,7 @@ void IntervalMapTest::eval() {
 }
 
 void IntervalMapTest::insert_test() {
-	assertion(print_caller_name());
+	assertion(get_caller_name());
 
 	auto mapping = interval_map<int, char>('A');
 
@@ -60,7 +60,7 @@ void IntervalMapTest::insert_test() {
 }
 
 void IntervalMapTest::insert_bis_test() {
-	assertion(print_caller_name());
+	assertion(get_caller_name());
 
 	auto mapping = interval_map<int, char>('A');
 
@@ -72,7 +72,7 @@ void IntervalMapTest::insert_bis_test() {
 }
 
 void IntervalMapTest::insert_before_test() {
-	assertion(print_caller_name());
+	assertion(get_caller_name());
 
 	auto mapping = interval_map<int, char>('A');
 
@@ -85,7 +85,7 @@ void IntervalMapTest::insert_before_test() {
 }
 
 void IntervalMapTest::insert_before_bis_test() {
-	assertion(print_caller_name());
+	assertion(get_caller_name());
 
 	auto mapping = interval_map<int, char>('A');
 
@@ -98,7 +98,7 @@ void IntervalMapTest::insert_before_bis_test() {
 }
 
 void IntervalMapTest::insert_before_tricky_test() {
-	assertion(print_caller_name());
+	assertion(get_caller_name());
 
 	auto mapping = interval_map<int, char>('A');
 
@@ -111,7 +111,7 @@ void IntervalMapTest::insert_before_tricky_test() {
 }
 
 void IntervalMapTest::insert_complex_test() {
-	assertion(print_caller_name());
+	assertion(get_caller_name());
 
 	auto mapping = interval_map<int, char>('A');
 
@@ -124,7 +124,7 @@ void IntervalMapTest::insert_complex_test() {
 }
 
 void IntervalMapTest::canonicity_simple_test() {
-	assertion(print_caller_name());
+	assertion(get_caller_name());
 
 	auto mapping = interval_map<int, char>('A');
 
@@ -136,7 +136,7 @@ void IntervalMapTest::canonicity_simple_test() {
 };
 
 void IntervalMapTest::canonicity_inject_test() {
-	assertion(print_caller_name());
+	assertion(get_caller_name());
 
 	auto mapping = interval_map<int, char>('A');
 
@@ -148,7 +148,7 @@ void IntervalMapTest::canonicity_inject_test() {
 };
 
 void IntervalMapTest::canonicity_test() {
-	assertion(print_caller_name());
+	assertion(get_caller_name());
 
 	auto mapping = interval_map<int, char>('A');
 
@@ -164,7 +164,7 @@ void IntervalMapTest::canonicity_test() {
 };
 
 void IntervalMapTest::short_intrusion_test() {
-	assertion(print_caller_name());
+	assertion(get_caller_name());
 
 	auto mapping = interval_map<int, char>('A');
 
@@ -180,7 +180,7 @@ void IntervalMapTest::short_intrusion_test() {
 };
 
 void IntervalMapTest::long_intrusion_test() {
-	assertion(print_caller_name());
+	assertion(get_caller_name());
 
 	auto mapping = interval_map<int, char>('A');
 
@@ -215,7 +215,7 @@ public:
 };
 
 void IntervalMapTest::type_requirements_test() {
-	assertion(print_caller_name());
+	assertion(get_caller_name());
 
 	auto valBegin = myValue(0);
 
