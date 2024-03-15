@@ -1,54 +1,45 @@
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MAIN
+#if !defined( WIN32 )
+#define BOOST_TEST_DYN_LINK
+#endif
+
+#define BOOST_TEST_MODULE IntervalMap
+
 #include "../utils/StandardLibs.h"
 #include "../utils/InputOutput.h"
-#include "IntervalMapTest.h"
-#include "Utils.h"
+#include "../utils/IntervalMap.h"
 
-template<class K, class V>
-void IntervalMapTest::print(const interval_map<K, V>& mymap) {
-	
-	std::cout << std::endl;
-	for (int i = -3; i < 30; i++) {
-		std::cout << std::setw(5) << "  " + std::to_string(i) << "  "
-			<< (mymap[i] == 'A' ? "" : (mymap[i] == 'Z' ? "  " : " "))
-			<< mymap[i] << std::endl;
+#include <boost/test/included/unit_test.hpp>
+
+static class IntervalMapTest {
+public:
+	template<class K, class V>
+	static void print(const interval_map<K, V>& mymap) {
+
+		std::cout << std::endl;
+		for (int i = -3; i < 30; i++) {
+			std::cout << std::setw(5) << "  " + std::to_string(i) << "  "
+				<< (mymap[i] == 'A' ? "" : (mymap[i] == 'Z' ? "  " : " "))
+				<< mymap[i] << std::endl;
+		}
+
+		std::cout << std::endl;
+		for (auto it : mymap.m_map) {
+			std::cout << " " << it.first << " " << it.second << "  ";
+		}
 	}
 
-	std::cout << std::endl;
-	for (auto it : mymap.m_map) {
-		std::cout << " " << it.first << " " << it.second << "  ";
+	static std::string getMap(const interval_map<int, char>& mymap) {
+		std::string r = "";
+		for (auto it : mymap.m_map) {
+			r += " " + std::to_string(it.first) + " " + it.second + " ";
+		}
+		return r;
 	}
-}
+};
 
-std::string IntervalMapTest::getMap(const interval_map<int, char>& mymap) {
-	std::string r = "";
-	for (auto it : mymap.m_map) {
-		r += " " + std::to_string(it.first) + " " + it.second + " ";
-	}
-	return r;
-}
-
-std::tuple<int, int> IntervalMapTest::eval() {
-	std::cout << "  --- IntervalMap Tests --- \n" << std::endl;
-
-	return eval_tests({
-		insert_test,
-		insert_bis_test,
-		insert_before_test,
-		insert_before_bis_test,
-		insert_before_tricky_test,
-		insert_complex_test,
-		canonicity_simple_test,
-		canonicity_inject_test,
-		canonicity_test,
-		short_intrusion_test,
-		long_intrusion_test,
-		type_requirements_test
-	});
-}
-
-void IntervalMapTest::insert_test() {
-	assertion(get_caller_name());
-
+BOOST_AUTO_TEST_CASE(insert_test) {
 	auto mapping = interval_map<int, char>('A');
 
 	mapping.assign(1, 3, 'B');
@@ -56,24 +47,20 @@ void IntervalMapTest::insert_test() {
 
 	mapping.assign(3, 5, 'Z');
 
-	assertion(getMap(mapping), std::string(" 1 B  3 Z  5 C  7 A "));
+	BOOST_TEST(IntervalMapTest::getMap(mapping) == std::string(" 1 B  3 Z  5 C  7 A "));
 }
 
-void IntervalMapTest::insert_bis_test() {
-	assertion(get_caller_name());
-
+BOOST_AUTO_TEST_CASE(insert_bis_test) {
 	auto mapping = interval_map<int, char>('A');
 
 	mapping.assign(3, 9, 'B');
 
 	mapping.assign(5, 7, 'Z');
 
-	assertion(getMap(mapping), std::string(" 3 B  5 Z  7 B  9 A "));
+	BOOST_TEST(IntervalMapTest::getMap(mapping) == std::string(" 3 B  5 Z  7 B  9 A "));
 }
 
-void IntervalMapTest::insert_before_test() {
-	assertion(get_caller_name());
-
+BOOST_AUTO_TEST_CASE(insert_before_test) {
 	auto mapping = interval_map<int, char>('A');
 
 	mapping.assign(1, 3, 'B');
@@ -81,12 +68,10 @@ void IntervalMapTest::insert_before_test() {
 
 	mapping.assign(1, 3, 'Z');
 
-	assertion(getMap(mapping), std::string(" 1 Z  3 A  5 C  7 A "));
+	BOOST_TEST(IntervalMapTest::getMap(mapping) == std::string(" 1 Z  3 A  5 C  7 A "));
 }
 
-void IntervalMapTest::insert_before_bis_test() {
-	assertion(get_caller_name());
-
+BOOST_AUTO_TEST_CASE(insert_before_bis_test) {
 	auto mapping = interval_map<int, char>('A');
 
 	mapping.assign(1, 3, 'B');
@@ -94,12 +79,10 @@ void IntervalMapTest::insert_before_bis_test() {
 
 	mapping.assign(-5, -2, 'Z');
 
-	assertion(getMap(mapping), std::string(" -5 Z  -2 A  1 B  3 A  5 C  7 A "));
+	BOOST_TEST(IntervalMapTest::getMap(mapping) == std::string(" -5 Z  -2 A  1 B  3 A  5 C  7 A "));
 }
 
-void IntervalMapTest::insert_before_tricky_test() {
-	assertion(get_caller_name());
-
+BOOST_AUTO_TEST_CASE(insert_before_tricky_test) {
 	auto mapping = interval_map<int, char>('A');
 
 	mapping.assign(1, 5, 'B');
@@ -107,12 +90,10 @@ void IntervalMapTest::insert_before_tricky_test() {
 
 	mapping.assign(-1, 3, 'Z');
 
-	assertion(getMap(mapping), std::string(" -1 Z  3 B  5 C  7 A "));
+	BOOST_TEST(IntervalMapTest::getMap(mapping) == std::string(" -1 Z  3 B  5 C  7 A "));
 }
 
-void IntervalMapTest::insert_complex_test() {
-	assertion(get_caller_name());
-
+BOOST_AUTO_TEST_CASE(insert_complex_test) {
 	auto mapping = interval_map<int, char>('A');
 
 	mapping.assign(1, 3, 'B');
@@ -120,36 +101,30 @@ void IntervalMapTest::insert_complex_test() {
 
 	mapping.assign(3, 6, 'Z');
 
-	assertion(getMap(mapping), std::string(" 1 B  3 Z  6 C  7 A "));
+	BOOST_TEST(IntervalMapTest::getMap(mapping) == std::string(" 1 B  3 Z  6 C  7 A "));
 }
 
-void IntervalMapTest::canonicity_simple_test() {
-	assertion(get_caller_name());
-
+BOOST_AUTO_TEST_CASE(canonicity_simple_test) {
 	auto mapping = interval_map<int, char>('A');
 
 	mapping.assign(1, 3, 'B');
 
 	mapping.assign(5, 20, 'A');
 
-	assertion(getMap(mapping), std::string(" 1 B  3 A "));
+	BOOST_TEST(IntervalMapTest::getMap(mapping) == std::string(" 1 B  3 A "));
 };
 
-void IntervalMapTest::canonicity_inject_test() {
-	assertion(get_caller_name());
-
+BOOST_AUTO_TEST_CASE(canonicity_inject_test) {
 	auto mapping = interval_map<int, char>('A');
 
 	mapping.assign(1, 7, 'B');
 
 	mapping.assign(5, 10, 'A');
 
-	assertion(getMap(mapping), std::string(" 1 B  5 A "));
+	BOOST_TEST(IntervalMapTest::getMap(mapping) == std::string(" 1 B  5 A "));
 };
 
-void IntervalMapTest::canonicity_test() {
-	assertion(get_caller_name());
-
+BOOST_AUTO_TEST_CASE(canonicity_test) {
 	auto mapping = interval_map<int, char>('A');
 
 	mapping.assign(1, 3, 'B');
@@ -160,12 +135,10 @@ void IntervalMapTest::canonicity_test() {
 
 	mapping.assign(15, 23, 'Z');
 
-	assertion(getMap(mapping), std::string(" 1 B  3 A  5 C  7 A  9 D  11 A  13 E  15 Z  23 A "));
+	BOOST_TEST(IntervalMapTest::getMap(mapping) == std::string(" 1 B  3 A  5 C  7 A  9 D  11 A  13 E  15 Z  23 A "));
 };
 
-void IntervalMapTest::short_intrusion_test() {
-	assertion(get_caller_name());
-
+BOOST_AUTO_TEST_CASE(short_intrusion_test) {
 	auto mapping = interval_map<int, char>('A');
 
 	mapping.assign(1, 3, 'B');
@@ -176,12 +149,10 @@ void IntervalMapTest::short_intrusion_test() {
 
 	mapping.assign(13, 14, 'Z');
 
-	assertion(getMap(mapping), std::string(" 1 B  3 A  5 C  7 A  9 D  11 A  13 Z  14 E  17 A  19 F  21 A "));
+	BOOST_TEST(IntervalMapTest::getMap(mapping) == std::string(" 1 B  3 A  5 C  7 A  9 D  11 A  13 Z  14 E  17 A  19 F  21 A "));
 };
 
-void IntervalMapTest::long_intrusion_test() {
-	assertion(get_caller_name());
-
+BOOST_AUTO_TEST_CASE(long_intrusion_test) {
 	auto mapping = interval_map<int, char>('A');
 
 	mapping.assign(1, 3, 'B');
@@ -192,7 +163,7 @@ void IntervalMapTest::long_intrusion_test() {
 
 	mapping.assign(6, 20, 'Z');
 
-	assertion(getMap(mapping), std::string(" 1 B  3 A  5 C  6 Z  20 F  21 A "));
+	BOOST_TEST(IntervalMapTest::getMap(mapping) == std::string(" 1 B  3 A  5 C  6 Z  20 F  21 A "));
 };
 
 
@@ -214,16 +185,15 @@ public:
 	bool operator== (const myValue item) { return item.myInt == this->myInt; }
 };
 
-void IntervalMapTest::type_requirements_test() {
-	assertion(get_caller_name());
-
+BOOST_AUTO_TEST_CASE(type_requirements_test) {
 	auto valBegin = myValue(0);
 
 	auto mapping = interval_map<myKey, myValue>(valBegin);
 
 	mapping.assign(myKey(1), myKey(3), myValue(2));
 	mapping.assign(myKey(5), myKey(7), myValue(4));
-
-	assertion(1, 1);
 }
+
+
+
 

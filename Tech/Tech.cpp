@@ -3,10 +3,9 @@
 
 #include "utils/AlgorithmComplexity.h"
 
-#include "test/Tests.h"
+//#include "test/Tests.h"
 
 #include <boost/regex.h>
-
 
 int main()
 {
@@ -28,7 +27,7 @@ int main()
 
 
 
-	run_all_tests();
+	//run_all_tests();
 
 	std::cout << std::endl << std::endl;
 	
