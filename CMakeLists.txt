@@ -20,7 +20,7 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project ("technical-assessment")
+project ("technical-assessment" VERSION 0.1.0)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
@@ -55,14 +55,17 @@ find_package(Boost REQUIRED COMPONENTS
 	unit_test_framework ) 
 
 # Include Unit Tests
-add_executable(Tests.Tech 
-	"Tech/test/IntervalMapTest.cpp")
+add_executable(Tests.IntervalMap "Tech/test/IntervalMapTest.cpp")
 
-target_link_libraries(Tests.Tech Boost::filesystem Boost::system Boost::unit_test_framework)
+add_executable(Tests.Arithmetics "Tech/test/ArithmeticsTest.cpp")
+
+target_link_libraries(Tests.IntervalMap Boost::unit_test_framework)
+target_link_libraries(Tests.Arithmetics Boost::unit_test_framework)
 
 enable_testing()
 
-add_test(NAME Tests.Tech COMMAND Tests.Tech)
+add_test(NAME Tests.IntervalMap COMMAND Tests.IntervalMap)
+add_test(NAME Tests.Arithmetics COMMAND Tests.Arithmetics)
 
 # Include sub-projects.
 add_subdirectory ("Tech")
