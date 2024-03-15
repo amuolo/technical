@@ -5,6 +5,9 @@
 
 #include "test/Tests.h"
 
+#include <boost/regex.h>
+
+
 int main()
 {
 	auto random = random_machine<int>();
@@ -25,14 +28,10 @@ int main()
 
 
 
-	auto result = run_all_tests();
+	run_all_tests();
 
 	std::cout << std::endl << std::endl;
 	
-	print(result);
-
-	std::cout << std::endl << std::endl;
-
 	std::cin.get();
 
 	return 0;

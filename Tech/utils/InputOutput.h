@@ -45,6 +45,12 @@ inline void print(std::tuple<T1, T2> item)
     std::cout << std::get<0>(item) << " " << std::get<1>(item);
 }
 
+template <class T1, class T2, class T3>
+inline void print(std::tuple<T1, T2, T3> item)
+{
+    std::cout << std::get<0>(item) << " " << std::get<1>(item) << " " << std::get<2>(item);
+}
+
 inline std::string get_caller_name(const std::source_location& location = std::source_location::current())
 {
     return location.function_name();

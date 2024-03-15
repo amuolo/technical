@@ -1,4 +1,10 @@
 {
+  "ExpandedNodes": [
+    ""
+  ],
+  "SelectedNode": "\\C:\\Users\\amuolo\\source\\repos\\technical-assessment\\CMakeLists.txt\\CMakeLists.txt",
+  "PreviewInSolutionExplorer": false,
+  "DevContainersInfoBarHidden": true,
   "OutputFoldersPerTargetSystem": {
     "Local Machine": [
       "out\\build\\x64-debug",
@@ -9,10 +15,16 @@
       "out\\install\\x86-debug",
       "out\\build\\x86-release",
       "out\\install\\x86-release"
+    ],
+    "WSL: Ubuntu": [
+      "out\\Ubuntu\\build\\linux-debug",
+      "out\\Ubuntu\\install\\linux-debug"
     ]
   },
-  "ExpandedNodes": [
-    ""
-  ],
-  "PreviewInSolutionExplorer": false
+  "ActiveTargetSystem": "Local Machine",
+  "MRUPresetsPerTargetSystem": {
+    "WSL: Ubuntu": {
+      "configure": "linux-debug"
+    }
+  }
 }
