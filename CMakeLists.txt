@@ -56,7 +56,6 @@ find_package(Boost REQUIRED COMPONENTS
 
 # Include Unit Tests
 add_executable(Tests.IntervalMap "Tech/test/IntervalMapTest.cpp")
-
 add_executable(Tests.Arithmetics "Tech/test/ArithmeticsTest.cpp")
 
 target_link_libraries(Tests.IntervalMap Boost::unit_test_framework)

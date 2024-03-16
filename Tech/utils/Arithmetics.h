@@ -6,8 +6,8 @@
 #include "StandardLibs.h"
 
 template <class T1, class T2, class W1, class W2>
-std::pair<T1, T2> operator+ (std::pair<T1, T2> a, std::pair<W1, W2> b) {
-	return std::make_pair(a.first + b.first, a.second + b.second);
+std::pair<T1, T2> operator+ (const std::pair<T1, T2>& a, const std::pair<W1, W2>& b) {
+	return std::pair(a.first + b.first, a.second + b.second);
 };
 
 #endif
