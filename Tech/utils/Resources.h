@@ -5,7 +5,7 @@
 
 #include <windows.h>
 
-int get_available_memory_percentage() 
+int get_used_memory_percentage() 
 {
 	MEMORYSTATUSEX statex;
 

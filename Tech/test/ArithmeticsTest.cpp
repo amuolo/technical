@@ -24,3 +24,23 @@ BOOST_AUTO_TEST_CASE(complex_pair_sum) {
 	BOOST_TEST(res.second == -15);
 }
 
+BOOST_AUTO_TEST_CASE(simple_tuple_sum) {
+	auto res = std::tuple(2, 2.3, 'a') + std::tuple(3, 1.1, 'b');
+
+	BOOST_TEST(std::get<0>(res) == 5);
+
+	BOOST_TEST(std::get<1>(res) == 3.4);
+
+	BOOST_TEST(std::get<2>(res) == -61);
+}
+
+BOOST_AUTO_TEST_CASE(char_pointer_sum) {
+	std::string a = "hello", b = " ", c = "world", d = "!";
+
+	auto res = std::tuple(a.data(), c.data()) + std::tuple(b.data(), d.data());
+
+	auto str = std::string(std::get<0>(res)) + std::string(std::get<1>(res));
+
+	BOOST_TEST(str == "hello world!");
+}
+

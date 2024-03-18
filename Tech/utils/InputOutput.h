@@ -20,9 +20,10 @@ std::vector<T> parse_input_line()
     return input;
 }
 
-inline void print(std::vector<int> arr)
+template <class T>
+inline void print(std::vector<T> arr) requires(std::is_arithmetic_v<T>)
 {
-    for (auto a : arr)
+    for (const auto& a : arr)
         std::cout << a << ' ';
 };
 

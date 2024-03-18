@@ -21,14 +21,14 @@ public:
 		}
 
 		std::cout << std::endl;
-		for (auto it : mymap.m_map) {
+		for (const auto& it : mymap.m_map) {
 			std::cout << " " << it.first << " " << it.second << "  ";
 		}
 	}
 
 	static std::string getMap(const interval_map<int, char>& mymap) {
 		std::string r = "";
-		for (auto it : mymap.m_map) {
+		for (const auto& it : mymap.m_map) {
 			r += " " + std::to_string(it.first) + " " + it.second + " ";
 		}
 		return r;

@@ -13,17 +13,20 @@ int main()
 
 	auto x = std::vector<int>();
 
-	auto complexity = algorithm_complexity<int>(
+	auto study = algorithm_complexity<int>(
 		[&]() { x.push_back(random.get(1, 10)); },
 		[&]() { return x.size(); },
 		[&]() { x.clear(); });
 
-	std::cout << std::endl << complexity.analysis() << std::endl << std::endl;
+	study.run_analysis();
 
-	complexity.print_benchmark();
+	std::cout << std::endl << study.get_result() << std::endl << std::endl;
+
+	study.print_benchmark();
 
 	std::cout << std::endl << std::endl;
 
+	study.print_slopes();
 
 
 
