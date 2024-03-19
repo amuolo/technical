@@ -3,6 +3,8 @@
 #ifndef INCLUDE_UTILS_STANDARDLIBS_H_
 #define INCLUDE_UTILS_STANDARDLIBS_H_
 
+#define NOMINMAX
+
 #include <cstdio>
 #include <iostream>
 #include <iomanip>
@@ -18,6 +20,9 @@
 #include <random>
 #include <tuple>
 #include <numeric>
+#include <cmath>
+#include <limits>
+#include <ranges>
 
 #endif
 

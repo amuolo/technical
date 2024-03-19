@@ -9,14 +9,18 @@
 
 int main()
 {
-	auto random = random_machine<int>();
+	auto random = tech::random_machine<long long>();
+	auto num = [&]() { return random.get(std::numeric_limits<long long>::min(), std::numeric_limits<long long>::max()); };
 
-	auto x = std::vector<int>();
+	auto x = std::map<long long, long long>();
 
-	auto study = algorithm_complexity<int>(
-		[&]() { x.push_back(random.get(1, 10)); },
+	std::vector<long long> keys;
+
+	auto study = tech::algorithm_complexity(
+		[&]() { x[keys.at(random.get(0, keys.size() - 1))] = num(); },
+		[&]() { long long n; do { n = num(); } while (x.contains(n)); keys.push_back(n); x[n] = num(); },
 		[&]() { return x.size(); },
-		[&]() { x.clear(); });
+		[&]() { x.clear(); keys.clear(); });
 
 	study.run_analysis();
 
@@ -26,7 +30,11 @@ int main()
 
 	std::cout << std::endl << std::endl;
 
-	study.print_slopes();
+	study.print_timings("O(n)");
+
+	std::cout << std::endl << std::endl;
+
+	study.print_slopes("O(n)");
 
 
 

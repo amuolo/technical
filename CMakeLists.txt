@@ -57,14 +57,17 @@ find_package(Boost REQUIRED COMPONENTS
 # Include Unit Tests
 add_executable(Tests.IntervalMap "Tech/test/IntervalMapTest.cpp")
 add_executable(Tests.Arithmetics "Tech/test/ArithmeticsTest.cpp")
+add_executable(Tests.AlgorithmComplexity "Tech/test/AlgorithmComplexityTest.cpp")
 
 target_link_libraries(Tests.IntervalMap Boost::unit_test_framework)
 target_link_libraries(Tests.Arithmetics Boost::unit_test_framework)
+target_link_libraries(Tests.AlgorithmComplexity Boost::unit_test_framework)
 
 enable_testing()
 
 add_test(NAME Tests.IntervalMap COMMAND Tests.IntervalMap)
 add_test(NAME Tests.Arithmetics COMMAND Tests.Arithmetics)
+add_test(NAME Tests.AlgorithmComplexity COMMAND Tests.AlgorithmComplexity)
 
 # Include sub-projects.
 add_subdirectory ("Tech")

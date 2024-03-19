@@ -34,61 +34,66 @@
  *		 3 -> 'A'
  *		...
  */
-template <typename K, typename V>
-class interval_map {
-	friend static class IntervalMapTest;
 
-private:
-	V m_valBegin;
-	std::map<K, V> m_map;
+namespace tech
+{
+	template <typename K, typename V>
+	class interval_map {
+		friend static class IntervalMapTest;
 
-public:
+	private:
+		V m_valBegin;
+		std::map<K, V> m_map;
 
-	interval_map(V const& val) : m_valBegin(val) {}
+	public:
 
-	void assign(K const& keyBegin, K const& keyEnd, V const& val) {
-		if (!(keyBegin < keyEnd))
-			return;
+		interval_map(V const& val) : m_valBegin(val) {}
 
-		auto startIt = m_map.lower_bound(keyBegin);				// O(log(n))
-		auto finishIt = m_map.lower_bound(keyEnd);				// O(log(n))
-		bool isFinishIn = m_map.find(keyEnd) != m_map.end();	// O(log(n))
+		void assign(K const& keyBegin, K const& keyEnd, V const& val) {
+			if (!(keyBegin < keyEnd))
+				return;
 
-		V preBeginVal = startIt == m_map.begin() ? m_valBegin : std::prev(startIt)->second;
-		V preEndVal = preBeginVal;
+			auto startIt = m_map.lower_bound(keyBegin);				// O(log(n))
+			auto finishIt = m_map.lower_bound(keyEnd);				// O(log(n))
+			bool isFinishIn = m_map.find(keyEnd) != m_map.end();	// O(log(n))
 
-		auto it = startIt;
+			V preBeginVal = startIt == m_map.begin() ? m_valBegin : std::prev(startIt)->second;
+			V preEndVal = preBeginVal;
 
-		while (it != finishIt) {								// O(distance(start, finish))
-			auto nextIt = std::next(it);
-			if (nextIt == finishIt) {
-				if (isFinishIn)
-					preEndVal = nextIt->second;
-				else
-					preEndVal = it->second;						// construction & assignments
+			auto it = startIt;
+
+			while (it != finishIt) {								// O(distance(start, finish))
+				auto nextIt = std::next(it);
+				if (nextIt == finishIt) {
+					if (isFinishIn)
+						preEndVal = nextIt->second;
+					else
+						preEndVal = it->second;						// construction & assignments
+				}
+				it = m_map.erase(it);								// amortized O(1)
 			}
-			it = m_map.erase(it);								// amortized O(1)
+
+			bool isBeginOk = preBeginVal != val;
+			bool isFinishOk = (isBeginOk || preBeginVal != preEndVal) && val != preEndVal;
+
+			if (isBeginOk)
+				m_map.insert(std::make_pair(keyBegin, val));		// O(log(n))
+			if (isFinishOk)
+				m_map.insert(std::make_pair(keyEnd, preEndVal));	// O(log(n))
 		}
 
-		bool isBeginOk = preBeginVal != val;
-		bool isFinishOk = (isBeginOk || preBeginVal != preEndVal) && val != preEndVal;
-
-		if (isBeginOk)
-			m_map.insert(std::make_pair(keyBegin, val));		// O(log(n))
-		if (isFinishOk)
-			m_map.insert(std::make_pair(keyEnd, preEndVal));	// O(log(n))
-	}
-
-	V const& operator[](K const& key) const {
-		auto it = m_map.upper_bound(key);
-		if (it == m_map.begin()) {
-			return m_valBegin;
+		V const& operator[](K const& key) const {
+			auto it = m_map.upper_bound(key);
+			if (it == m_map.begin()) {
+				return m_valBegin;
+			}
+			else {
+				return (--it)->second;
+			}
 		}
-		else {
-			return (--it)->second;
-		}
-	}
-};
+	};
+
+}
 
 #endif
 

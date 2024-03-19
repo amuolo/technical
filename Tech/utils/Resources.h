@@ -5,15 +5,19 @@
 
 #include <windows.h>
 
-int get_used_memory_percentage() 
+namespace tech
 {
-	MEMORYSTATUSEX statex;
+	int get_used_memory_percentage()
+	{
+		MEMORYSTATUSEX statex;
 
-	statex.dwLength = sizeof(statex);
+		statex.dwLength = sizeof(statex);
 
-	GlobalMemoryStatusEx(&statex);
+		GlobalMemoryStatusEx(&statex);
 
-	return statex.dwMemoryLoad;
+		return statex.dwMemoryLoad;
+	}
+
 }
 
 
