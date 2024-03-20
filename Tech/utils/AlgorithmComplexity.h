@@ -9,12 +9,17 @@
 
 namespace tech
 {
-	struct algorithm_complexity_info {
+	struct algo_info {
 		using ld = long double;
 		using vec_ld = std::vector<ld>;
+
+	public:
 		std::function<ld(ld)> reducer;
 		vec_ld timings;
 		vec_ld slopes;
+
+		algo_info() {}
+		algo_info(std::function<ld(ld)> f) : reducer(f), timings(vec_ld()), slopes(vec_ld()) {}
 	};
 
 	class algorithm_complexity {
@@ -30,7 +35,7 @@ namespace tech
 		std::function<void()> m_reset;
 		std::function<long long()> m_eval_benchmark;
 
-		std::unordered_map<std::string, algorithm_complexity_info> m_slopes;
+		std::unordered_map<std::string, algo_info> m_slopes;
 
 		std::map<long, long long> m_benchmark;
 		std::string m_result;
@@ -61,31 +66,31 @@ namespace tech
 		void init_slopes() {
 			m_slopes.clear();
 			m_slopes = {
-				{ "O(log2(n))",  { [&](ld x) { return std::pow(2., x / m_timein); }, vec_ld(), vec_ld() } },
-				{ "O(log3(n))",  { [&](ld x) { return std::pow(2., x / m_timein); }, vec_ld(), vec_ld() } },
-				{ "O(log4(n))",  { [&](ld x) { return std::pow(2., x / m_timein); }, vec_ld(), vec_ld() } },
-				{ "O(log5(n))",  { [&](ld x) { return std::pow(2., x / m_timein); }, vec_ld(), vec_ld() } },
-				{ "O(log6(n))",  { [&](ld x) { return std::pow(2., x / m_timein); }, vec_ld(), vec_ld() } },
-				{ "O(log7(n))",  { [&](ld x) { return std::pow(2., x / m_timein); }, vec_ld(), vec_ld() } },
-				{ "O(log8(n))",  { [&](ld x) { return std::pow(2., x / m_timein); }, vec_ld(), vec_ld() } },
-				{ "O(log9(n))",  { [&](ld x) { return std::pow(2., x / m_timein); }, vec_ld(), vec_ld() } },
-				{ "O(log10(n))", { [&](ld x) { return std::pow(2., x / m_timein); }, vec_ld(), vec_ld() } },
+				{ "O(log2(n))",  algo_info([&](ld x) { return std::pow(2., x / m_timein); }) },
+				{ "O(log3(n))",  algo_info([&](ld x) { return std::pow(3., x / m_timein); }) },
+				{ "O(log4(n))",  algo_info([&](ld x) { return std::pow(4., x / m_timein); }) },
+				{ "O(log5(n))",  algo_info([&](ld x) { return std::pow(5., x / m_timein); }) },
+				{ "O(log6(n))",  algo_info([&](ld x) { return std::pow(6., x / m_timein); }) },
+				{ "O(log7(n))",  algo_info([&](ld x) { return std::pow(7., x / m_timein); }) },
+				{ "O(log8(n))",  algo_info([&](ld x) { return std::pow(8., x / m_timein); }) },
+				{ "O(log9(n))",  algo_info([&](ld x) { return std::pow(9., x / m_timein); }) },
+				{ "O(log10(n))", algo_info([&](ld x) { return std::pow(10., x / m_timein); }) },
 
-				{ "O(n)",        { [&](ld x) { return x; },                vec_ld(), vec_ld() } },
-				{ "O(n^2)",      { [&](ld x) { return std::pow(x, -2); },  vec_ld(), vec_ld() } },
-				{ "O(n^3)",      { [&](ld x) { return std::pow(x, -3); },  vec_ld(), vec_ld() } },
-				{ "O(n^4)",      { [&](ld x) { return std::pow(x, -4); },  vec_ld(), vec_ld() } },
-				{ "O(n^5)",      { [&](ld x) { return std::pow(x, -5); },  vec_ld(), vec_ld() } },
-				{ "O(n^6)",      { [&](ld x) { return std::pow(x, -6); },  vec_ld(), vec_ld() } },
-				{ "O(n^7)",      { [&](ld x) { return std::pow(x, -7); },  vec_ld(), vec_ld() } },
-				{ "O(n^8)",      { [&](ld x) { return std::pow(x, -8); },  vec_ld(), vec_ld() } },
-				{ "O(n^9)",      { [&](ld x) { return std::pow(x, -9); },  vec_ld(), vec_ld() } },
-				{ "O(n^10)",     { [&](ld x) { return std::pow(x, -10); }, vec_ld(), vec_ld() } },
-				{ "O(n^11)",     { [&](ld x) { return std::pow(x, -11); }, vec_ld(), vec_ld() } },
-				{ "O(n^12)",     { [&](ld x) { return std::pow(x, -12); }, vec_ld(), vec_ld() } },
+				{ "O(n)",      algo_info([&](ld x) { return x; }) },
+				{ "O(n^2)",    algo_info([&](ld x) { return std::pow(x, -2); }) },
+				{ "O(n^3)",    algo_info([&](ld x) { return std::pow(x, -3); }) },
+				{ "O(n^4)",    algo_info([&](ld x) { return std::pow(x, -4); }) },
+				{ "O(n^5)",    algo_info([&](ld x) { return std::pow(x, -5); }) },
+				{ "O(n^6)",    algo_info([&](ld x) { return std::pow(x, -6); }) },
+				{ "O(n^7)",    algo_info([&](ld x) { return std::pow(x, -7); }) },
+				{ "O(n^8)",    algo_info([&](ld x) { return std::pow(x, -8); }) },
+				{ "O(n^9)",    algo_info([&](ld x) { return std::pow(x, -9); }) },
+				{ "O(n^10)",   algo_info([&](ld x) { return std::pow(x, -10); }) },
+				{ "O(n^11)",   algo_info([&](ld x) { return std::pow(x, -11); }) },
+				{ "O(n^12)",   algo_info([&](ld x) { return std::pow(x, -12); }) },
 
-				{ "O(e^n)",  { [&](ld x) { return std::log(x); },  vec_ld(), vec_ld() } },
-				{ "O(n!)",   { [&](ld x) { return x; },            vec_ld(), vec_ld() } }  // TODO: not implemented yet
+				{ "O(e^n)",  algo_info([&](ld x) { return std::log(x); }) },
+				{ "O(n!)",   algo_info([&](ld x) { return x; }) }  // TODO: not implemented yet
 			};
 		}
 
@@ -147,24 +152,27 @@ namespace tech
 
 			auto getMinMaxSumAvg = [](const auto& v, const std::string& name) {
 				if (v.size() == 0) throw std::exception((std::string("eval_results is trying to access empty storage ") + name).c_str());
-				auto min = *std::max_element(v.begin(), v.end(), [](const auto& d1, const auto& d2) { return std::fabs(d1) > std::fabs(d2); });
-				auto max = *std::max_element(v.begin(), v.end(), [](const auto& d1, const auto& d2) { return std::fabs(d1) < std::fabs(d2); });
-				auto sum = std::accumulate(v.begin(), v.end(), ld(0), [](const ld r, const auto& d) -> ld { return r + std::fabs(d); });
-				auto avg = sum / v.size();
-				return std::tuple(min, max, sum, avg);
+				ld min = *std::max_element(v.begin(), v.end(), [](const ld d1, const ld d2) { return std::fabs(d1) > std::fabs(d2); });
+				ld max = *std::max_element(v.begin(), v.end(), [](const ld d1, const ld d2) { return std::fabs(d1) < std::fabs(d2); });
+				ld sum = std::accumulate(v.begin(), v.end(), ld(0), [](const ld r, const ld d) -> ld { return r + std::fabs(d); });
+				ld avg = sum / v.size();
+				bool valid = !(std::isnan(min) || std::isnan(max) || std::isnan(sum) || std::isnan(avg));
+				return std::tuple(valid, min, max, sum, avg);
 			};
-						
-			auto [minTime, maxTime, sumTime, avgTime] = getMinMaxSumAvg(timings, "O(1)");
 
-			if (std::find_if(timings.begin(), timings.end(), [&](ld x) { return x - avgTime > minTime; }) == timings.end()) {
+			auto [valid, minTime, maxTime, sumTime, avgTime] = getMinMaxSumAvg(timings, "O(1)");
+
+			if (valid && std::find_if(timings.begin(), timings.end(), [&](ld x) { return x - avgTime > minTime; }) == timings.end()) {
 				m_result = "O(1)";
 				return;
 			}
 
-			for (const auto& [complexity, item] : m_slopes) {						
-				auto [minSlope, maxSlope, sumSlope, avgSlope] = getMinMaxSumAvg(item.slopes, complexity);
+			for (const auto& [complexity, item] : m_slopes) {
+				auto slopes = item.slopes;
 
-				if (std::find_if(item.slopes.begin(), item.slopes.end(), [&](ld x) { return std::fabs(x) - avgSlope > minSlope; }) == item.slopes.end()) {
+				auto [valid, minSlope, maxSlope, sumSlope, avgSlope] = getMinMaxSumAvg(slopes, complexity);
+
+				if (valid && std::find_if(slopes.begin(), slopes.end(), [&](ld x) { return std::fabs(std::fabs(x) - avgSlope) > minSlope; }) == slopes.end()) {
 					m_result = complexity;
 					return;
 				}
@@ -193,11 +201,12 @@ namespace tech
 				long long time = 0;
 				auto t0 = std::chrono::high_resolution_clock::now();
 
-				while (m_benchmark.size() < 100) {
+				while (m_benchmark.size() < 10) {
 					long n = m_get_n();
 					m_benchmark.insert(std::make_pair(m_get_n(), m_eval_benchmark()));
+					auto t = std::chrono::high_resolution_clock::now();
 
-					if (std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - t0).count() > m_timeout) {
+					if (std::chrono::duration_cast<std::chrono::microseconds>(t - t0).count() > m_timeout) {
 						m_status = "max time exceeded";
 						break;
 					}
@@ -207,7 +216,7 @@ namespace tech
 						break;
 					}
 
-					while (m_get_n() < n + m_optimal_starting_n)
+					while (m_get_n() < n + n)
 						m_increase_n();
 				}
 				eval_slopes();

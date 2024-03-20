@@ -9,18 +9,22 @@
 
 int main()
 {
-	auto random = tech::random_machine<long long>();
-	auto num = [&]() { return random.get(std::numeric_limits<long long>::min(), std::numeric_limits<long long>::max()); };
+	using ld = long double;
+	using ull = unsigned long long;
 
-	auto x = std::map<long long, long long>();
+	std::complex<ld> x = 1234;
+	ull n = 1;
 
-	std::vector<long long> keys;
+	auto fun = [&]() {
+		for (ull i = 0; i < n; i++)
+			x = x * std::exp(std::complex<ld>(0.0, 1.0) * (ld)std::acos(-1) / (ld)1234.);
+		};
 
 	auto study = tech::algorithm_complexity(
-		[&]() { x[keys.at(random.get(0, keys.size() - 1))] = num(); },
-		[&]() { long long n; do { n = num(); } while (x.contains(n)); keys.push_back(n); x[n] = num(); },
-		[&]() { return x.size(); },
-		[&]() { x.clear(); keys.clear(); });
+		[&]() { fun(); },
+		[&]() { n++; },
+		[&]() { return n; },
+		[&]() { n = 0; });
 
 	study.run_analysis();
 
@@ -30,12 +34,11 @@ int main()
 
 	std::cout << std::endl << std::endl;
 
-	study.print_timings("O(n)");
+	study.print_slopes("O(n)");
 
 	std::cout << std::endl << std::endl;
 
-	study.print_slopes("O(n)");
-
+	study.print_timings("O(log2(n))");
 
 
 	//run_all_tests();
