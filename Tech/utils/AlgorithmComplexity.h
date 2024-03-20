@@ -17,9 +17,12 @@ namespace tech
 		std::function<ld(ld)> reducer;
 		vec_ld timings;
 		vec_ld slopes;
+		ld error;
 
 		algo_info() {}
-		algo_info(std::function<ld(ld)> f) : reducer(f), timings(vec_ld()), slopes(vec_ld()) {}
+
+		algo_info(std::function<ld(ld)> f) 
+			: reducer(f), timings(vec_ld()), slopes(vec_ld()), error(std::numeric_limits<ld>::max()) {}
 	};
 
 	class algorithm_complexity {
@@ -45,7 +48,7 @@ namespace tech
 		long long m_optimal_starting_n;
 		long long m_optimal_num_it;
 		long long m_timeout = (long long)(10000000);
-		long long m_timein = (long long)(1000);
+		long long m_timein = (long long)(100);
 
 		void init_parameters() {
 			auto n0 = m_get_n();
@@ -89,8 +92,8 @@ namespace tech
 				{ "O(n^11)",   algo_info([&](ld x) { return std::pow(x, 1./11.); }) },
 				{ "O(n^12)",   algo_info([&](ld x) { return std::pow(x, 1./12.); }) },
 
+				{ "O(1)",    algo_info([&](ld x) { return x; }) },
 				{ "O(e^n)",  algo_info([&](ld x) { return std::log(x); }) },
-				{ "O(n!)",   algo_info([&](ld x) { return x; }) }  // TODO: not implemented yet
 			};
 		}
 
@@ -126,7 +129,7 @@ namespace tech
 
 				long long time = m_eval_benchmark();
 				if (time > m_timein) checks++;
-				else			       checks = 0;
+				else			     checks = 0;
 			}
 		};
 
@@ -147,9 +150,6 @@ namespace tech
 		void eval_results() {
 			if (!m_slopes.contains("O(n)")) throw std::exception("failed to retrieve slopes.");
 
-			auto vt = std::views::values(m_benchmark);
-			std::vector<long long> timings{ vt.begin(), vt.end() };
-
 			auto getMinMaxSumAvg = [](const auto& v, const std::string& name) {
 				if (v.size() == 0) throw std::exception((std::string("eval_results is trying to access empty storage ") + name).c_str());
 				ld min = *std::max_element(v.begin(), v.end(), [](const ld d1, const ld d2) { return std::fabs(d1) > std::fabs(d2); });
@@ -160,25 +160,25 @@ namespace tech
 				return std::tuple(valid, min, max, sum, avg);
 			};
 
-			auto [valid, minTime, maxTime, sumTime, avgTime] = getMinMaxSumAvg(timings, "O(1)");
+			for (auto& [complexity, info] : m_slopes) {
+				if (complexity == "O(1)") {
+					auto [valid, minTime, maxTime, sumTime, avgTime] = getMinMaxSumAvg(info.timings, "O(1)");
 
-			if (valid && std::find_if(timings.begin(), timings.end(), [&](ld x) { return x - avgTime > minTime; }) == timings.end()) {
-				m_result = "O(1)";
-				return;
-			}
+					if (valid && std::fabs((maxTime - info.timings.at(0)) / minTime) < 0.1) {
+						info.error = 0;
+						break;
+					}
+				}
 
-			for (const auto& [complexity, item] : m_slopes) {
-				auto slopes = item.slopes;
+				auto [valid, minSlope, maxSlope, sumSlope, avgSlope] = getMinMaxSumAvg(info.slopes, complexity);
 
-				auto [valid, minSlope, maxSlope, sumSlope, avgSlope] = getMinMaxSumAvg(slopes, complexity);
-
-				if (valid && std::find_if(slopes.begin(), slopes.end(), [&](ld x) { return std::fabs(std::fabs(x) - avgSlope) > minSlope; }) == slopes.end()) {
-					m_result = complexity;
-					return;
+				if (valid) {
+					info.error = std::fabs((maxSlope - minSlope) / avgSlope);
+					continue;
 				}
 			}
 
-			m_result = "undefined";
+			m_result = std::min_element(m_slopes.begin(), m_slopes.end(), [](const auto& a, const auto& b) { return a.second.error < b.second.error; })->first;
 		}
 
 	public:
@@ -216,7 +216,7 @@ namespace tech
 						break;
 					}
 
-					while (m_get_n() < n + n)
+					while (m_get_n() < n + n/2)
 						m_increase_n();
 				}
 				eval_slopes();
@@ -243,6 +243,12 @@ namespace tech
 				print(m_slopes[name].slopes);
 			else
 				std::cout << "slopes not found";
+		}
+
+		void print_errors() {
+			for (const auto& [complexity, info] : m_slopes) {
+				std::cout << " " << complexity << ": " << info.error << std::endl;
+			}
 		}
 
 		std::string get_result() {

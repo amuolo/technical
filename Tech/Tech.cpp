@@ -12,20 +12,14 @@ int main()
 	using ld = long double;
 	using ull = unsigned long long;
 
-	std::complex<ld> x = 1234;
-	ull n = 1;
-
-	auto fun = [&]() {
-		for (ull i = 0; i < n; i++)
-			for (ull i = 0; i < n; i++)
-				x = x * std::exp(std::complex<ld>(0.0, 1.0) * (ld)std::acos(-1) / (ld)1234.);
-		};
+	ull i = 0;
+	auto x = std::vector<ull>();
 
 	auto study = tech::algorithm_complexity(
-		[&]() { fun(); },
-		[&]() { n++; },
-		[&]() { return n; },
-		[&]() { n = 0; });
+		[&]() { x.push_back(++i); },
+		[&]() { x.push_back(++i); },
+		[&]() { return x.size(); },
+		[&]() { x.clear(); });
 
 	study.run_analysis();
 
@@ -37,16 +31,34 @@ int main()
 
 	study.print_slopes("O(n)");
 
+	std::cout << std::endl << std::endl << std::endl;
+
+
+
+	study.print_timings("O(log10(n))");
+
 	std::cout << std::endl << std::endl;
 
-	study.print_timings("O(n^2)");
+	study.print_slopes("O(log10(n))");
+
+	std::cout << std::endl << std::endl << std::endl;
 
 
-	//run_all_tests();
+
+	study.print_timings("O(e^n)");
 
 	std::cout << std::endl << std::endl;
-	
+
+	study.print_slopes("O(e^n)");
+
+	std::cout << std::endl << std::endl << std::endl;
+
+
+
+	study.print_errors();
+
+
+	std::cout << std::endl << std::endl;
 	std::cin.get();
-
 	return 0;
 }
