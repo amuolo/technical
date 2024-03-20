@@ -17,7 +17,8 @@ int main()
 
 	auto fun = [&]() {
 		for (ull i = 0; i < n; i++)
-			x = x * std::exp(std::complex<ld>(0.0, 1.0) * (ld)std::acos(-1) / (ld)1234.);
+			for (ull i = 0; i < n; i++)
+				x = x * std::exp(std::complex<ld>(0.0, 1.0) * (ld)std::acos(-1) / (ld)1234.);
 		};
 
 	auto study = tech::algorithm_complexity(
@@ -38,7 +39,7 @@ int main()
 
 	std::cout << std::endl << std::endl;
 
-	study.print_timings("O(log2(n))");
+	study.print_timings("O(n^2)");
 
 
 	//run_all_tests();
