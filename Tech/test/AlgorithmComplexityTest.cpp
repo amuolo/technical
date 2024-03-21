@@ -12,6 +12,28 @@
 using ld = long double;
 using ull = unsigned long long;
 
+BOOST_AUTO_TEST_CASE(simple_constant_complexity_test) {
+
+	std::complex<ld> x = 1234;
+	ull n = 1;
+
+	auto fun = [&]() {
+		x = x * std::exp(std::complex<ld>(0.0, 1.0) * (ld)std::acos(-1) / (ld)1234.);
+		};
+
+	auto study = tech::algorithm_complexity(
+		[&]() { fun(); },
+		[&]() { n++; },
+		[&]() { return n; },
+		[&]() { n = 0; });
+
+	study.run_analysis();
+
+	auto result = study.get_result();
+
+	BOOST_TEST(result == "O(1)");
+}
+
 BOOST_AUTO_TEST_CASE(constant_complexity_test) {
 
 	ull i = 0;
@@ -150,3 +172,27 @@ BOOST_AUTO_TEST_CASE(n4_complexity_test) {
 
 	BOOST_TEST(result == "O(n^4)");
 }
+
+BOOST_AUTO_TEST_CASE(exp2_complexity_test) {
+
+	std::complex<ld> x = 1234;
+	ull n = 1;
+
+	auto fun = [&]() {
+		for (ull i = 0; i < std::pow((ld)2., (ld)n); i++)
+			x = x * std::exp(std::complex<ld>(0.0, 1.0) * (ld)std::acos(-1) / (ld)1234.);
+		};
+
+	auto study = tech::algorithm_complexity(
+		[&]() { fun(); },
+		[&]() { n++; },
+		[&]() { return n; },
+		[&]() { n = 0; });
+
+	study.run_analysis();
+
+	auto result = study.get_result();
+
+	BOOST_TEST(boost::algorithm::contains(result, "^n"));
+}
+

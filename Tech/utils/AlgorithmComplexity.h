@@ -7,6 +7,8 @@
 #include "RandomMachine.h"
 #include "Resources.h"
 
+#include <boost/algorithm/string.hpp>
+
 namespace tech
 {
 	struct algo_info {
@@ -47,8 +49,11 @@ namespace tech
 		short m_type;
 		long long m_optimal_starting_n;
 		long long m_optimal_num_it;
-		long long m_timeout = (long long)(10000000);
-		long long m_timein = (long long)(100);
+		long long m_timeOut = (long long)(10000000);
+		long long m_timeMin = (long long)(1000000);
+		long long m_timeIn = (long long)(100);
+
+		std::function<std::chrono::steady_clock::time_point()> m_get_time_now = []() { return std::chrono::high_resolution_clock::now(); };
 
 		void init_parameters() {
 			auto n0 = m_get_n();
@@ -69,16 +74,11 @@ namespace tech
 		void init_slopes() {
 			m_slopes.clear();
 			m_slopes = {
-				{ "O(log2(n))",  algo_info([&](ld x) { return std::pow(2., x / m_timein); }) },
-				{ "O(log3(n))",  algo_info([&](ld x) { return std::pow(3., x / m_timein); }) },
-				{ "O(log4(n))",  algo_info([&](ld x) { return std::pow(4., x / m_timein); }) },
-				{ "O(log5(n))",  algo_info([&](ld x) { return std::pow(5., x / m_timein); }) },
-				{ "O(log6(n))",  algo_info([&](ld x) { return std::pow(6., x / m_timein); }) },
-				{ "O(log7(n))",  algo_info([&](ld x) { return std::pow(7., x / m_timein); }) },
-				{ "O(log8(n))",  algo_info([&](ld x) { return std::pow(8., x / m_timein); }) },
-				{ "O(log9(n))",  algo_info([&](ld x) { return std::pow(9., x / m_timein); }) },
-				{ "O(log10(n))", algo_info([&](ld x) { return std::pow(10., x / m_timein); }) },
+				{ "O(log2(n))",  algo_info([&](ld x) { return std::pow(2., x / m_timeIn); }) },
+				{ "O(log3(n))",  algo_info([&](ld x) { return std::pow(3., x / m_timeIn); }) },
+				{ "O(log4(n))",  algo_info([&](ld x) { return std::pow(4., x / m_timeIn); }) },
 
+				{ "O(1)",      algo_info([&](ld x) { return x; }) },
 				{ "O(n)",      algo_info([&](ld x) { return x; }) },
 				{ "O(n^2)",    algo_info([&](ld x) { return std::pow(x, 1./2.); }) },
 				{ "O(n^3)",    algo_info([&](ld x) { return std::pow(x, 1./3.); }) },
@@ -91,9 +91,10 @@ namespace tech
 				{ "O(n^10)",   algo_info([&](ld x) { return std::pow(x, 1./10.); }) },
 				{ "O(n^11)",   algo_info([&](ld x) { return std::pow(x, 1./11.); }) },
 				{ "O(n^12)",   algo_info([&](ld x) { return std::pow(x, 1./12.); }) },
-
-				{ "O(1)",    algo_info([&](ld x) { return x; }) },
-				{ "O(e^n)",  algo_info([&](ld x) { return std::log(x); }) },
+								
+				{ "O(2^n)",  algo_info([&](ld x) { return std::log2(x); }) },
+				{ "O(3^n)",  algo_info([&](ld x) { return std::log2(x) / std::log2(ld(3)); }) },
+				{ "O(4^n)",  algo_info([&](ld x) { return std::log2(x) / std::log2(ld(4)); }) },
 			};
 		}
 
@@ -104,32 +105,32 @@ namespace tech
 
 			// This will continue until the time needed is greater than 100 us for 5 times in a row
 			while (checks < 5) {
-				m_increase_n();
+				if(checks == 0) m_increase_n();
 				m_optimal_starting_n = m_get_n();
 
 				// Increase the number of iterations cautiously for increasing and decreasing algorithms
-				if (m_type == 0 || (m_optimal_num_it < m_optimal_starting_n / 200)) {
+				if (checks == 0 && (m_type == 0 || (m_optimal_num_it < m_optimal_starting_n / 200))) {
 					m_optimal_num_it++;
 				}
 
 				// Increasing n to compensate for the algorithm
 				if (m_type < 0) {
-					for (size_t i = 0; i < 2 * m_optimal_num_it + 1; i++)
+					for (size_t i = 0; i < (-m_type) * m_optimal_num_it; i++)
 						m_increase_n();
 				}
 
+				// Build benchmark function
 				m_eval_benchmark = [&]() {
-					auto t1 = std::chrono::high_resolution_clock::now();
+					auto t1 = m_get_time_now();
 					for (size_t i = 0; i < m_optimal_num_it; i++) {
 						m_function();
 					}
-					auto t2 = std::chrono::high_resolution_clock::now();
+					auto t2 = m_get_time_now();
 					return std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
 					};
 
-				long long time = m_eval_benchmark();
-				if (time > m_timein) checks++;
-				else			     checks = 0;
+				if (m_eval_benchmark() > m_timeIn) checks++;
+				else checks = 0;
 			}
 		};
 
@@ -151,7 +152,7 @@ namespace tech
 			if (!m_slopes.contains("O(n)")) throw std::exception("failed to retrieve slopes.");
 
 			auto getMinMaxSumAvg = [](const auto& v, const std::string& name) {
-				if (v.size() == 0) throw std::exception((std::string("eval_results is trying to access empty storage ") + name).c_str());
+				if (v.size() <= 1) throw std::exception((std::string("eval_results is trying to access empty benchmarks ") + name).c_str());
 				ld min = *std::max_element(v.begin(), v.end(), [](const ld d1, const ld d2) { return std::fabs(d1) > std::fabs(d2); });
 				ld max = *std::max_element(v.begin(), v.end(), [](const ld d1, const ld d2) { return std::fabs(d1) < std::fabs(d2); });
 				ld sum = std::accumulate(v.begin(), v.end(), ld(0), [](const ld r, const ld d) -> ld { return r + std::fabs(d); });
@@ -161,18 +162,17 @@ namespace tech
 			};
 
 			for (auto& [complexity, info] : m_slopes) {
-				if (complexity == "O(1)") {
-					auto [valid, minTime, maxTime, sumTime, avgTime] = getMinMaxSumAvg(info.timings, "O(1)");
+				auto [valid, minSlope, maxSlope, sumSlope, avgSlope] = getMinMaxSumAvg(info.slopes, complexity);
 
-					if (valid && std::fabs((maxTime - info.timings.at(0)) / minTime) < 0.1) {
+				if (complexity == "O(1)") {
+					auto times = info.timings;
+
+					if (valid && times.at(0) + times.at(1) > 1.1 * (times.at(times.size() - 2) + times.back())) {
 						info.error = 0;
 						break;
 					}
-				}
-
-				auto [valid, minSlope, maxSlope, sumSlope, avgSlope] = getMinMaxSumAvg(info.slopes, complexity);
-
-				if (valid) {
+				}		
+				else if (valid) {
 					info.error = std::fabs((maxSlope - minSlope) / avgSlope);
 					continue;
 				}
@@ -198,15 +198,14 @@ namespace tech
 				init_slopes();
 				calibrate();
 
-				long long time = 0;
-				auto t0 = std::chrono::high_resolution_clock::now();
+				auto t0 = m_get_time_now();
+				auto get_time_elapsed = [&]() { return std::chrono::duration_cast<std::chrono::microseconds>(m_get_time_now() - t0).count(); };
 
-				while (m_benchmark.size() < 10) {
+				while (m_benchmark.size() < 20 || get_time_elapsed() < m_timeMin) {
 					long n = m_get_n();
 					m_benchmark.insert(std::make_pair(m_get_n(), m_eval_benchmark()));
-					auto t = std::chrono::high_resolution_clock::now();
 
-					if (std::chrono::duration_cast<std::chrono::microseconds>(t - t0).count() > m_timeout) {
+					if (get_time_elapsed() > m_timeOut) {
 						m_status = "max time exceeded";
 						break;
 					}
@@ -216,11 +215,20 @@ namespace tech
 						break;
 					}
 
-					while (m_get_n() < n + n/2)
+					eval_slopes();
+					auto newN = n + n / 2;
+
+					if (m_benchmark.size() > 2) {
+						eval_results();
+						if (boost::algorithm::contains(m_result, "^n"))
+							newN = n + 1;
+						else if (boost::algorithm::contains(m_result, "n^"))
+							newN = n + n / 3;
+					}
+
+					while (m_get_n() < newN)
 						m_increase_n();
 				}
-				eval_slopes();
-				eval_results();
 			}
 			catch (std::exception e) {
 				std::cout << "\n\n Error: " << e.what() << std::endl << std::endl;
