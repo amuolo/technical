@@ -6,6 +6,7 @@
 #include "StandardLibs.h"
 #include "RandomMachine.h"
 #include "Resources.h"
+#include "InputOutput.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -135,6 +136,7 @@ namespace tech
 		};
 
 		void eval_slopes() {
+			init_slopes();
 			for (auto& [complexity, item] : m_slopes) {
 				long n0 = 0;
 				ld t0 = 0;
@@ -161,6 +163,8 @@ namespace tech
 				return std::tuple(valid, min, max, sum, avg);
 			};
 
+			auto [valid, minSlopeBench, maxSlopeBench, sumSlopeBench, avgSlopeBench] = getMinMaxSumAvg(get_slopes("O(n)"), "O(n)");
+
 			for (auto& [complexity, info] : m_slopes) {
 				auto [valid, minSlope, maxSlope, sumSlope, avgSlope] = getMinMaxSumAvg(info.slopes, complexity);
 
@@ -173,8 +177,8 @@ namespace tech
 					}
 				}		
 				else if (valid) {
-					info.error = std::fabs((maxSlope - minSlope) / avgSlope);
-					continue;
+					if (complexity == "O(1)" || boost::algorithm::contains(complexity, "log") || avgSlopeBench > 0.9)
+						info.error = std::fabs((maxSlope - minSlope) / avgSlope);
 				}
 			}
 
@@ -195,7 +199,6 @@ namespace tech
 			try {
 				m_benchmark.clear();
 				init_parameters();
-				init_slopes();
 				calibrate();
 
 				auto t0 = m_get_time_now();
@@ -239,18 +242,18 @@ namespace tech
 			print(m_benchmark);
 		}
 
-		void print_timings(std::string name) {
+		vec_ld get_timings(std::string name) {
 			if (m_slopes.contains(name))
-				print(m_slopes[name].timings);
+				return m_slopes[name].timings;
 			else
-				std::cout << "timings not found";
+				return vec_ld();
 		}
 
-		void print_slopes(std::string name) {
+		vec_ld get_slopes(std::string name) {
 			if (m_slopes.contains(name))
-				print(m_slopes[name].slopes);
+				return m_slopes[name].slopes;
 			else
-				std::cout << "slopes not found";
+				return vec_ld();
 		}
 
 		void print_errors() {

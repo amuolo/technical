@@ -3,10 +3,6 @@
 
 #include "utils/AlgorithmComplexity.h"
 
-//#include "test/Tests.h"
-
-#include <boost/regex.h>
-
 int main()
 {
 	using ld = long double;
@@ -26,35 +22,39 @@ int main()
 		[&]() { return n; },
 		[&]() { n = 0; });
 
-	study.run_analysis();
+	ull attempt = 0;
+	do {
+		attempt++;
+		study.run_analysis();
+	} while (boost::algorithm::contains(study.get_result(), "log"));
 
-	std::cout << std::endl << study.get_result() << std::endl << std::endl;
+	std::cout << std::endl << attempt << "   " << study.get_result() << std::endl << std::endl;
 
 	study.print_benchmark();
 
 	std::cout << std::endl << std::endl;
 
-	study.print_slopes("O(n)");
+	tech::print(study.get_slopes("O(n)"));
 
 	std::cout << std::endl << std::endl << std::endl;
 
 
 
-	study.print_timings("O(log10(n))");
+	tech::print(study.get_timings("O(log10(n))"));
 
 	std::cout << std::endl << std::endl;
 
-	study.print_slopes("O(log10(n))");
+	tech::print(study.get_slopes("O(log10(n))"));
 
 	std::cout << std::endl << std::endl << std::endl;
 
 
 
-	study.print_timings("O(e^n)");
+	tech::print(study.get_timings("O(e^n)"));
 
 	std::cout << std::endl << std::endl;
 
-	study.print_slopes("O(e^n)");
+	tech::print(study.get_slopes("O(e^n)"));
 
 	std::cout << std::endl << std::endl << std::endl;
 
