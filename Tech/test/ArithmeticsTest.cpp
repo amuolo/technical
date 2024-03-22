@@ -2,9 +2,9 @@
 
 #define BOOST_TEST_MODULE Arithmetics
 
-#include "../utils/StandardLibs.h"
-#include "../utils/InputOutput.h"
-#include "../utils/Arithmetics.h"
+#include "../utils/StandardLibs.hpp"
+#include "../utils/InputOutput.hpp"
+#include "../utils/Arithmetics.hpp"
 
 #include <boost/test/included/unit_test.hpp>
 

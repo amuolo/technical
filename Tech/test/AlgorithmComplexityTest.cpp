@@ -2,9 +2,9 @@
 
 #define BOOST_TEST_MODULE AlgorithmComplexity
 
-#include "../utils/StandardLibs.h"
-#include "../utils/InputOutput.h"
-#include "../utils/AlgorithmComplexity.h"
+#include "../utils/StandardLibs.hpp"
+#include "../utils/InputOutput.hpp"
+#include "../utils/AlgorithmComplexity.hpp"
 
 #include <boost/test/included/unit_test.hpp>
 #include <boost/algorithm/string.hpp>

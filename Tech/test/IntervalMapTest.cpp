@@ -2,9 +2,9 @@
 
 #define BOOST_TEST_MODULE IntervalMap
 
-#include "../utils/StandardLibs.h"
-#include "../utils/InputOutput.h"
-#include "../utils/IntervalMap.h"
+#include "../utils/StandardLibs.hpp"
+#include "../utils/InputOutput.hpp"
+#include "../utils/IntervalMap.hpp"
 
 #include <boost/test/included/unit_test.hpp>
 
