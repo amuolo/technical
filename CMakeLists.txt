@@ -55,16 +55,19 @@ find_package(Boost REQUIRED COMPONENTS
 	unit_test_framework ) 
 
 # Include Unit Tests
+add_executable(Tests.Calculator "Tech/test/CalculatorTest.cpp")
 add_executable(Tests.IntervalMap "Tech/test/IntervalMapTest.cpp")
 add_executable(Tests.Arithmetics "Tech/test/ArithmeticsTest.cpp")
 add_executable(Tests.AlgorithmComplexity "Tech/test/AlgorithmComplexityTest.cpp")
 
+target_link_libraries(Tests.Calculator Boost::unit_test_framework)
 target_link_libraries(Tests.IntervalMap Boost::unit_test_framework)
 target_link_libraries(Tests.Arithmetics Boost::unit_test_framework)
 target_link_libraries(Tests.AlgorithmComplexity Boost::unit_test_framework)
 
 enable_testing()
 
+add_test(NAME Tests.Calculator COMMAND Tests.Calculator)
 add_test(NAME Tests.IntervalMap COMMAND Tests.IntervalMap)
 add_test(NAME Tests.Arithmetics COMMAND Tests.Arithmetics)
 add_test(NAME Tests.AlgorithmComplexity COMMAND Tests.AlgorithmComplexity)
