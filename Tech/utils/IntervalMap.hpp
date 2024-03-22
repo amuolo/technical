@@ -3,7 +3,7 @@
 #ifndef INCLUDE_UTILS_INTERVALMAP_H_
 #define INCLUDE_UTILS_INTERVALMAP_H_
 
-#include "StandardLibs.h"
+#include "StandardLibs.hpp"
 
 /**
  * Implementation of a trace facility for LSST

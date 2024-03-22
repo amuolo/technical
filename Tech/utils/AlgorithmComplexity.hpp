@@ -3,10 +3,10 @@
 #ifndef INCLUDE_UTILS_ALGORITHMCOMPLEXITY_H_
 #define INCLUDE_UTILS_ALGORITHMCOMPLEXITY_H_
 
-#include "StandardLibs.h"
-#include "RandomMachine.h"
-#include "Resources.h"
-#include "InputOutput.h"
+#include "StandardLibs.hpp"
+#include "RandomMachine.hpp"
+#include "Resources.hpp"
+#include "InputOutput.hpp"
 
 #include <boost/algorithm/string.hpp>
 

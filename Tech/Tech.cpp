@@ -1,7 +1,7 @@
-﻿#include "utils/StandardLibs.h"
-#include "utils/InputOutput.h"
+﻿#include "utils/StandardLibs.hpp"
+#include "utils/InputOutput.hpp"
 
-#include "utils/AlgorithmComplexity.h"
+#include "utils/AlgorithmComplexity.hpp"
 
 int main()
 {

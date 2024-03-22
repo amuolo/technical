@@ -3,7 +3,7 @@
 #ifndef INCLUDE_UTILS_ARITHMETICS_H_
 #define INCLUDE_UTILS_ARITHMETICS_H_
 
-#include "StandardLibs.h"
+#include "StandardLibs.hpp"
 
 template <class T1, class T2>
 inline std::string tech_sum(const T1& a, const T2& b) requires(std::is_same_v<T1, char*>) {
