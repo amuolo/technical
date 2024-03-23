@@ -170,8 +170,11 @@ namespace tech
 
 				if (complexity == "O(1)") {
 					auto times = info.timings;
+					auto growthFactor = std::prev(m_benchmark.end())->first / m_benchmark.begin()->first;
+					// This tolerance below is perhaps a bit magic
+					auto tolerance = 1. + (std::log10(growthFactor) / 5);
 
-					if (valid && times.at(0) + times.at(1) > 1.1 * (times.at(times.size() - 2) + times.back())) {
+					if (valid && (times.at(0) + times.at(1)) * tolerance > (times.at(times.size() - 2) + times.back())) {
 						info.error = 0;
 						break;
 					}
