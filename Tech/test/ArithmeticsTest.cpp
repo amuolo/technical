@@ -42,6 +42,20 @@ BOOST_AUTO_TEST_CASE(vector_sum) {
 	std::vector<cxint> a = { cxint(1, 2), cxint(2, -4) };
 	std::vector<cxint> b = { cxint(1, -2), cxint(-5, 2) };
 
+	auto r1 = a + b;
+	auto r2 = a - b;
+
+	BOOST_TEST(r1 == std::vector<cxint>({ cxint(2, 0), cxint(-3, -2) }));
+	BOOST_TEST(r2 == std::vector<cxint>({ cxint(0, 4), cxint(7, -6) }));
+}
+
+BOOST_AUTO_TEST_CASE(vector_dotproduct) {
+
+	using cxint = std::complex<int>;
+
+	std::vector<cxint> a = { cxint(1, 2), cxint(2, -4) };
+	std::vector<cxint> b = { cxint(1, -2), cxint(-5, 2) };
+
 	auto r1 = a * b;
 	auto r2 = a * 2;
 	auto r3 = 2 * a;
@@ -49,11 +63,6 @@ BOOST_AUTO_TEST_CASE(vector_sum) {
 	BOOST_TEST(r1 == cxint(-21, -20));
 	BOOST_TEST(r2 == std::vector<cxint>({ cxint(2, 4), cxint(4, -8) }));
 	BOOST_TEST(r3 == std::vector<cxint>({ cxint(2, 4), cxint(4, -8) }));
-}
-
-BOOST_AUTO_TEST_CASE(vector_dotproduct) {
-
-	BOOST_TEST(2 == 2);
 }
 
 BOOST_AUTO_TEST_CASE(vector_kronecker_product) {

@@ -53,9 +53,9 @@ inline auto operator + (const std::tuple<T1, T2, T3>& a, const std::tuple<W1, W2
 					  tech_sum(std::get<2>(a), std::get<2>(b)));
 }
 
-/**********************************************************/
-/*                     STL Containers                     */
-/**********************************************************/
+/******************************************************/
+/*                     STL Vector                     */
+/******************************************************/
 
 /***************/
 /*   Product   */
@@ -142,7 +142,7 @@ inline std::vector<T> operator / (std::vector<T> v, const T& a)
 /***************/
 
 template <class T>
-inline std::vector<T>& operator += (std::vector<T>& lhs, const std::vector<T>& rhs) requires(std::is_arithmetic_v<T>)
+inline std::vector<T>& operator += (std::vector<T>& lhs, const std::vector<T>& rhs)
 {
 	if (lhs.size() != rhs.size())
 		throw std::exception("vector size mismatch");
@@ -184,6 +184,18 @@ inline std::vector<T> operator - (std::vector<T> lhs, const std::vector<T>& rhs)
 {
 	return lhs -= rhs;
 }
+
+/******************************************************/
+/*                     STL Matrix                     */
+/******************************************************/
+
+/***************/
+/*   Product   */
+/***************/
+
+/***************/
+/*     Sum     */
+/***************/
 
 
 #endif
