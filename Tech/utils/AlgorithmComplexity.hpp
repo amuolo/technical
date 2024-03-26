@@ -170,11 +170,12 @@ namespace tech
 
 				if (complexity == "O(1)") {
 					auto times = info.timings;
-					auto growthFactor = std::prev(m_benchmark.end())->first / m_benchmark.begin()->first;
-					// This tolerance below is perhaps a bit magic
-					auto tolerance = 1. + (std::log10(growthFactor) / 5);
+					auto minN = (m_benchmark.begin()->first + std::next(m_benchmark.begin())->first) / 2.;
+					auto maxN = (std::prev(m_benchmark.end())->first + std::prev(std::prev(m_benchmark.end()))->first) / 2.;
+					auto growth = std::log(maxN) / std::log(minN);
+					auto tolerance = std::min(std::max(growth * 0.7, 1.), 1.8);
 
-					if (valid && (times.at(0) + times.at(1)) * tolerance > (times.at(times.size() - 2) + times.back())) {
+					if (valid && (times.at(0), times.at(1)) * tolerance / 2. > (times.at(times.size() - 2), times.back()) / 2.) {
 						info.error = 0;
 						break;
 					}
@@ -224,7 +225,7 @@ namespace tech
 					eval_slopes();
 					auto newN = n + n / 2;
 
-					if (m_benchmark.size() > 2) {
+					if (m_benchmark.size() > 3) {
 						eval_results();
 						if (boost::algorithm::contains(m_result, "^n"))
 							newN = n + 1;

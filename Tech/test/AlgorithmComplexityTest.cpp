@@ -17,9 +17,7 @@ BOOST_AUTO_TEST_CASE(simple_constant_complexity_test) {
 	std::complex<ld> x = 1234;
 	ull n = 1;
 
-	auto fun = [&]() {
-		x = x * std::exp(std::complex<ld>(0.0, 1.0) * (ld)std::acos(-1) / (ld)1234.);
-		};
+	auto fun = [&]() { x = x * std::exp(std::complex<ld>(0.0, 1.0) * (ld)std::acos(-1) / (ld)1234.); };
 
 	auto study = tech::algorithm_complexity(
 		[&]() { fun(); },
@@ -46,7 +44,24 @@ BOOST_AUTO_TEST_CASE(constant_complexity_test) {
 		[&]() { x.clear(); });
 
 	study.run_analysis();
+	auto result = study.get_result();
 
+	BOOST_TEST(result == "O(1)");
+}
+
+BOOST_AUTO_TEST_CASE(constant_high_memory_test) {
+
+	ull i = 0;
+	auto x = std::vector<ull>();
+	x.reserve(size_t(100000000));
+
+	auto study = tech::algorithm_complexity(
+		[&]() { x.push_back(++i); },
+		[&]() { x.push_back(++i); },
+		[&]() { return x.size(); },
+		[&]() { x.clear(); });
+
+	study.run_analysis();
 	auto result = study.get_result();
 
 	BOOST_TEST(result == "O(1)");
