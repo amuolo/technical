@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(amortized_constant_complexity_test) {
 	study.run_analysis();
 	auto result = study.get_result();
 
-	BOOST_TEST((result == "O(1)" || boost::algorithm::contains(result, "O(log")));
+	BOOST_TEST((result == "O(1)" || boost::algorithm::contains(result, "O(log")), "amortized constant not matched: found " << result);
 }
 
 BOOST_AUTO_TEST_CASE(amortized_constant_high_memory_test) {
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(amortized_constant_high_memory_test) {
 	study.run_analysis();
 	auto result = study.get_result();
 
-	BOOST_TEST((result == "O(1)" || boost::algorithm::contains(result, "O(log")));
+	BOOST_TEST((result == "O(1)" || boost::algorithm::contains(result, "O(log")), "amortized constant not matched: found " << result);
 }
 
 BOOST_AUTO_TEST_CASE(logarithmic_complexity_test) {
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(logarithmic_complexity_test) {
 
 	auto result = study.get_result();
 
-	BOOST_TEST(boost::algorithm::contains(result, "O(log"));
+	BOOST_TEST(boost::algorithm::contains(result, "O(log"), "log complexity not matched: found " << result);
 }
 
 BOOST_AUTO_TEST_CASE(n_complexity_test) {
@@ -208,6 +208,6 @@ BOOST_AUTO_TEST_CASE(exp2_complexity_test) {
 
 	auto result = study.get_result();
 
-	BOOST_TEST(boost::algorithm::contains(result, "^n"));
+	BOOST_TEST(boost::algorithm::contains(result, "^n"), "exponential complexity not matched: found " << result);
 }
 
