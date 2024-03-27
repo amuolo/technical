@@ -1,9 +1,4 @@
 {
-  "ExpandedNodes": [
-    ""
-  ],
-  "SelectedNode": "\\C:\\Users\\amuolo\\source\\repos\\technical-assessment\\CMakeLists.txt\\CMakeLists.txt",
-  "PreviewInSolutionExplorer": false,
   "DevContainersInfoBarHidden": true,
   "OutputFoldersPerTargetSystem": {
     "Local Machine": [
@@ -26,5 +21,13 @@
     "WSL: Ubuntu": {
       "configure": "linux-debug"
     }
-  }
+  },
+  "ExpandedNodes": [
+    "",
+    "\\Tech",
+    "\\Tech\\test",
+    "\\Tech\\utils"
+  ],
+  "SelectedNode": "\\Tech\\test",
+  "PreviewInSolutionExplorer": false
 }

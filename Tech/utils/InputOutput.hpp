@@ -22,6 +22,34 @@ namespace tech
         return input;
     }
 
+    bool is_properly_nested(std::string s)
+    {
+        if (s.size() == 0) return 1;
+
+        char a1 = '(', a2 = '[', a3 = '{', b1 = ')', b2 = ']', b3 = '}';
+
+        std::vector<char> a = { a1, a2, a3 }, b = { b1, b2, b3 }, z = {};
+
+        for(const auto& ch : s) {
+            if (std::find(b.begin(), b.end(), ch) == b.end() && std::find(a.begin(), a.end(), ch) == a.end()) 
+                continue;
+            else if (z.size() == 0 && std::find(b.begin(), b.end(), ch) != b.end()) 
+                return 0;
+            else if (std::find(a.begin(), a.end(), ch) != a.end()) 
+                z.push_back(ch);
+            else if (ch == b3 && z.back() == a3) 
+                z.pop_back();
+            else if (ch == b2 && z.back() == a2) 
+                z.pop_back();
+            else if (ch == b1 && z.back() == a1) 
+                z.pop_back();
+            else 
+                return 0;
+        }
+
+        return z.size() == 0 ? 1 : 0;
+    }
+
     template <class T>
     inline void print(std::vector<T> arr) requires(std::is_arithmetic_v<T>)
     {
