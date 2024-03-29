@@ -7,6 +7,9 @@
 
 #include <boost/test/included/unit_test.hpp>
 
+using cxint = std::complex<int>;
+using veccxint = std::vector<cxint>;
+
 BOOST_AUTO_TEST_CASE(pair_sum) {
 
 	auto res1 = std::make_pair(2, 2) + std::make_pair(1, 3);
@@ -37,36 +40,42 @@ BOOST_AUTO_TEST_CASE(tuple_sum) {
 
 BOOST_AUTO_TEST_CASE(vector_sum) {
 	
-	using cxint = std::complex<int>;
-
-	std::vector<cxint> a = { cxint(1, 2), cxint(2, -4) };
-	std::vector<cxint> b = { cxint(1, -2), cxint(-5, 2) };
+	veccxint a = { cxint(1, 2), cxint(2, -4) };
+	veccxint b = { cxint(1, -2), cxint(-5, 2) };
 
 	auto r1 = a + b;
 	auto r2 = a - b;
+	a += b;
+	b -= a;
 
-	BOOST_TEST(r1 == std::vector<cxint>({ cxint(2, 0), cxint(-3, -2) }));
-	BOOST_TEST(r2 == std::vector<cxint>({ cxint(0, 4), cxint(7, -6) }));
+	BOOST_TEST(r1 == veccxint({ cxint(2, 0), cxint(-3, -2) }));
+	BOOST_TEST(r2 == veccxint({ cxint(0, 4), cxint(7, -6) }));
+	BOOST_TEST(a == r1);
+	BOOST_TEST(b == -(r1 + r2) / 2);
 }
 
 BOOST_AUTO_TEST_CASE(vector_dotproduct) {
 
-	using cxint = std::complex<int>;
-
-	std::vector<cxint> a = { cxint(1, 2), cxint(2, -4) };
-	std::vector<cxint> b = { cxint(1, -2), cxint(-5, 2) };
+	veccxint a = { cxint(1, 2), cxint(2, -4) };
+	veccxint b = { cxint(1, -2), cxint(-5, 2) };
 
 	auto r1 = a * b;
 	auto r2 = a * 2;
 	auto r3 = 2 * a;
 
 	BOOST_TEST(r1 == cxint(-21, -20));
-	BOOST_TEST(r2 == std::vector<cxint>({ cxint(2, 4), cxint(4, -8) }));
-	BOOST_TEST(r3 == std::vector<cxint>({ cxint(2, 4), cxint(4, -8) }));
+	BOOST_TEST(r2 == veccxint({ cxint(2, 4), cxint(4, -8) }));
+	BOOST_TEST(r3 == veccxint({ cxint(2, 4), cxint(4, -8) }));
+	BOOST_TEST(r3 / 2 == a);
 }
 
 BOOST_AUTO_TEST_CASE(vector_kronecker_product) {
 
-	BOOST_TEST(2 == 2);
+	veccxint a = { cxint(1, 2), cxint(2, -4) };
+	veccxint b = { cxint(1, -2), cxint(-5, -2) };
+
+	auto r1 = kronecker(a, b);
+
+	BOOST_TEST(r1 == veccxint({ cxint(5, 0), cxint(-1, -12), cxint(-6, -8), cxint(-18, 16) }));
 }
 

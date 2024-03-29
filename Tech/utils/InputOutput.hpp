@@ -5,6 +5,15 @@
 
 #include "StandardLibs.hpp"
 
+template <class T>
+inline std::ostream& operator << (std::ostream& c, const std::vector<T>& x)
+{
+    for (size_t i = 0; i < x.size(); i++) {
+        c << x[i] << "  ";
+    }
+    return c;
+}
+
 namespace tech
 {
     template<class T>

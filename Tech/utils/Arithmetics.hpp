@@ -121,8 +121,8 @@ inline std::vector<T> operator * (const S& a, std::vector<T> v)
 /*   Division   */
 /****************/
 
-template <class T>
-inline std::vector<T>& operator /= (std::vector<T>& v, const T& a)
+template <class T, class S>
+inline std::vector<T>& operator /= (std::vector<T>& v, const S& a)
 {
 #pragma omp simd
 	for (size_t i = 0; i < v.size(); i++)
@@ -131,8 +131,8 @@ inline std::vector<T>& operator /= (std::vector<T>& v, const T& a)
 }
 
 
-template <class T>
-inline std::vector<T> operator / (std::vector<T> v, const T& a)
+template <class T, class S>
+inline std::vector<T> operator / (std::vector<T> v, const S& a)
 {
 	return v /= a;
 }
@@ -178,11 +178,20 @@ inline std::vector<T>& operator -= (std::vector<T>& lhs, const std::vector<T>& r
 	return lhs;
 }
 
-
 template <class T>
 inline std::vector<T> operator - (std::vector<T> lhs, const std::vector<T>& rhs)
 {
 	return lhs -= rhs;
+}
+
+template <class T>
+inline std::vector<T> operator - (std::vector<T> r)
+{
+#pragma omp simd
+	for (size_t i = 0; i < r.size(); i++)
+		r[i] = -r[i];
+
+	return r;
 }
 
 /******************************************************/
