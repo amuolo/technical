@@ -25,3 +25,13 @@ BOOST_AUTO_TEST_CASE(is_properly_nested) {
 	BOOST_TEST(tech::is_properly_nested(s1) == true);
 	BOOST_TEST(tech::is_properly_nested(s2) == false);
 }
+
+BOOST_AUTO_TEST_CASE(split) {
+	std::string s = "1 2 3 4";
+
+	auto r = tech::split(s, ' ');
+
+	BOOST_TEST(r.size() == 4);
+	BOOST_TEST(r[0] == "1");
+	BOOST_TEST(r[1] == "2");
+}

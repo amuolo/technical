@@ -5,6 +5,9 @@
 
 #include "StandardLibs.hpp"
 
+#include <boost/algorithm/string.hpp>
+
+
 template <class T>
 inline std::ostream& operator << (std::ostream& c, const std::vector<T>& x)
 {
@@ -29,6 +32,25 @@ namespace tech
             input.push_back(item);
 
         return input;
+    }
+    
+    auto split(const std::string& str, char delimiter) -> std::vector<std::string>
+    {
+        auto to_string = [](auto&& r) -> std::string {
+            const auto data = &*r.begin();
+            const auto size = static_cast<std::size_t>(std::ranges::distance(r));
+            return std::string{ data, size };
+        };
+
+        auto range = str |
+                     std::ranges::views::split(delimiter) |
+                     std::ranges::views::transform(to_string);
+
+        return { std::ranges::begin(range), std::ranges::end(range) };
+
+        //std::vector<std::string> seglist;
+        //boost::split(seglist, str, boost::is_any_of(delimiter));
+        //return seglist;
     }
 
     bool is_properly_nested(std::string s)
