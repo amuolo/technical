@@ -70,6 +70,20 @@ namespace tech
         //return seglist;
     }
 
+    void replace(std::string& str, const std::string& from, const std::string& to) {
+        // Option 1: C++14
+        if (from.empty())
+            return;
+        size_t start_pos = 0;
+        while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
+            str.replace(start_pos, from.length(), to);
+            start_pos += to.length(); 
+        }
+
+        // Option 2: Boost algorithm
+        //boost::replace_all(str, from, to);
+    }
+
     bool is_properly_nested(std::string s)
     {
         if (s.size() == 0) return 1;
