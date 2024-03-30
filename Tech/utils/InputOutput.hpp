@@ -20,22 +20,29 @@ inline std::ostream& operator << (std::ostream& c, const std::vector<T>& x)
 namespace tech
 {
     template<class T>
-    std::vector<T> parse_input_line()
+    std::vector<T> parse_input_line(std::istream& istr = std::cin)
     {
         std::string s;
         T item;
-        getline(std::cin, s);
-        std::stringstream stream(s);
-        std::vector<T> input;
+        getline(istr, s);
 
-        while (stream >> item)
-            input.push_back(item);
+        if constexpr (std::is_same_v<T, char>) {
+            return std::vector<char>(s.begin(), s.end());
+        }
+        else {
+            std::stringstream stream(s);
+            std::vector<T> input;
 
-        return input;
+            while (stream >> item)
+                input.push_back(item);
+
+            return input;
+        }
     }
     
     auto split(const std::string& str, char delimiter) -> std::vector<std::string>
     {
+        // Option 1: C++20 ranges
         auto to_string = [](auto&& r) -> std::string {
             const auto data = &*r.begin();
             const auto size = static_cast<std::size_t>(std::ranges::distance(r));
@@ -48,8 +55,18 @@ namespace tech
 
         return { std::ranges::begin(range), std::ranges::end(range) };
 
+        // Option 2: Boost algorithm
         //std::vector<std::string> seglist;
         //boost::split(seglist, str, boost::is_any_of(delimiter));
+        //return seglist;
+
+        // Option 3: c++14
+        //std::stringstream test;
+        //std::string segment;
+        //std::vector<std::string> seglist;
+        //test << str;
+        //while (std::getline(test, segment, delimiter))
+        //  seglist.push_back(segment);
         //return seglist;
     }
 

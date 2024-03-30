@@ -9,6 +9,22 @@
 using cxint = std::complex<int>;
 using veccxint = std::vector<cxint>;
 
+BOOST_AUTO_TEST_CASE(parse_input_line) {
+	auto stmp1 = std::istringstream("hello world");
+	auto is1 = std::istream(stmp1.rdbuf());
+	auto r1 = tech::parse_input_line<std::string>(is1);
+
+	BOOST_TEST(r1[0] == "hello");
+	BOOST_TEST(r1[1] == "world");
+
+	auto stmp2 = std::istringstream("hello world");
+	auto is2 = std::istream(stmp2.rdbuf());
+	auto r2 = tech::parse_input_line<char>(is2);
+
+	BOOST_TEST(r2[0] == 'h');
+	BOOST_TEST(r2[5] == ' ');
+}
+
 BOOST_AUTO_TEST_CASE(output_vec) {
 	std::stringstream s;
 	veccxint a = { cxint(1, 2), cxint(2, -4) };
