@@ -9,12 +9,23 @@
 
 
 template <class T>
-inline std::ostream& operator << (std::ostream& c, const std::vector<T>& x)
+inline std::ostream& operator << (std::ostream& o, const std::vector<T>& x)
 {
     for (size_t i = 0; i < x.size(); i++) {
-        c << x[i] << "  ";
+        o << x[i] << "  ";
     }
-    return c;
+    return o;
+}
+
+template <class T>
+inline std::ostream& operator << (std::ostream& o, const std::vector<std::vector<T>>& m)
+{
+    for (size_t i = 0; i < m.size(); i++) {
+        for (size_t j = 0; j < m[0].size(); j++)
+            o << m[i][j] << "  ";
+        o << "\n";
+    }
+    return o;
 }
 
 namespace tech

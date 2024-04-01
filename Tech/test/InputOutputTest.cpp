@@ -18,6 +18,15 @@ BOOST_AUTO_TEST_CASE(output_vec) {
 	BOOST_TEST(r == "(1,2)  (2,-4)  ");
 }
 
+BOOST_AUTO_TEST_CASE(output_mat) {
+	std::stringstream s;
+	std::vector<veccxint> a = { { cxint(1, 2), cxint(2, -4) }, { cxint(2, 3), cxint(3, -5) } };
+	s << a;
+	auto r = s.str(); 
+
+	BOOST_TEST(r == "(1,2)  (2,-4)  \n(2,3)  (3,-5)  \n");
+}
+
 BOOST_AUTO_TEST_CASE(parse_input_line) {
 	auto stmp1 = std::istringstream("hello world");
 	auto is1 = std::istream(stmp1.rdbuf());
