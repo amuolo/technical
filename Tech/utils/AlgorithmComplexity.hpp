@@ -178,7 +178,7 @@ namespace tech
 					auto growth = std::log(maxN) / std::log(minN);
 					auto tolerance = std::min(std::max(growth * 0.7, 1.), 1.8);
 
-					if (valid && (times.at(0), times.at(1)) * tolerance / 2. > (times.at(times.size() - 2), times.back()) / 2.) {
+					if (valid && (times.at(0) + times.at(1)) * tolerance / 2. > (times.at(times.size() - 2) + times.back()) / 2.) {
 						info.error = 0;
 						break;
 					}

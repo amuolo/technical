@@ -8,27 +8,23 @@ int main()
 	using ld = long double;
 	using ull = unsigned long long;
 
-	std::complex<ld> x = 1234;
-	ull n = 1;
-
-	auto fun = [&]() {
-		for (ull i = 0; i < n; i++)
-			for (ull i = 0; i < n; i++)
-				x = x * std::exp(std::complex<ld>(0.0, 1.0) * (ld)std::acos(-1) / (ld)1234.);
-		};
+	ull i = 0;
+	auto x = std::vector<ull>();
+	x.reserve(size_t(100000000));
 
 	auto study = tech::algorithm_complexity(
-		[&]() { fun(); },
-		[&]() { n++; },
-		[&]() { return n; },
-		[&]() { n = 0; });
+		[&]() { x.push_back(++i); },
+		[&]() { x.push_back(++i); },
+		[&]() { return x.size(); },
+		[&]() { x.clear(); });
 
 	ull attempt = 0;
 	do {
 		attempt++;
 		study.run_analysis();
-	} while (study.get_result() == "O(n^2)");
-	//while (study.get_result() == "O(1)");
+	} 
+	//while (study.get_result() == "O(n^2)");
+	while (study.get_result() == "O(1)");
 	//while (boost::algorithm::contains(study.get_result(), "log"));
 
 	std::cout << std::endl << attempt << "   " << study.get_result() << std::endl << std::endl;
