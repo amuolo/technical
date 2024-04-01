@@ -23,3 +23,12 @@ BOOST_AUTO_TEST_CASE(primes) {
 
 	BOOST_TEST(tech::get_primes(100).size() == 25);
 }
+
+BOOST_AUTO_TEST_CASE(sort_index) {
+
+	std::vector<int> a = { 4, 5, 1, 1, -2 };
+
+	std::vector<size_t> r = { 4, 2, 3, 0, 1 };
+
+	BOOST_TEST(tech::sort_index(a) == r);
+}
