@@ -226,14 +226,14 @@ namespace tech
 					}
 
 					eval_slopes();
-					auto newN = n + n / 2;
+					auto newN = n + std::max(l(1), n / 2);
 
 					if (m_benchmark.size() > 3) {
 						eval_results();
 						if (boost::algorithm::contains(m_result, "^n"))
 							newN = n + 1;
 						else if (boost::algorithm::contains(m_result, "n^"))
-							newN = n + n / 3;
+							newN = n + std::max(l(1), n / 3);
 					}
 
 					while (m_get_n() < newN)
