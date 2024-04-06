@@ -1,5 +1,34 @@
 {
   "dependencies": [
-    "boost"
+    "boost-core",
+    "boost-build",
+    "boost-accumulators",
+    "boost-algorithm",
+    "boost-system",
+    "boost-serialization",
+    "boost-filesystem",
+    "boost-test",
+
+    "boost-array",
+    "boost-assert",
+    "boost-atomic",
+    "boost-bind",
+    "boost-callable-traits",
+    "boost-compute",
+    "boost-config",
+    "boost-container",
+    "boost-container-hash",
+    "boost-context",
+    "boost-contract",
+    "boost-conversion",
+    "boost-convert",
+    "boost-coroutine",
+    "boost-coroutine2",
+    "boost-function",
+    "boost-function-types",
+    "boost-functional",
+    "boost-io",
+    "boost-iterator",
+    "boost-static-string"
   ]
 }

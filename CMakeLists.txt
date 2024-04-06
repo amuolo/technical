@@ -46,13 +46,14 @@ set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME    OFF)
 
-include_directories("${BOOST_ROOT}/include")
-
 find_package(Boost REQUIRED COMPONENTS 
 	system
 	filesystem
 	serialization 
 	unit_test_framework ) 
+
+include_directories("${BOOST_ROOT}/include")
+include_directories(${Boost_INCLUDE_DIRS})
 
 # Include Unit Tests
 add_executable(Tests.AlgorithmComplexity "Tech/test/AlgorithmComplexityTest.cpp")
