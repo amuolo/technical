@@ -5,6 +5,8 @@
 
 int main()
 {
+	std::cout << std::endl << "Start" << std::endl;
+
 	using ld = long double;
 	using ull = unsigned long long;
 
