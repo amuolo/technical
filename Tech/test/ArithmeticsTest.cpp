@@ -10,6 +10,14 @@
 using cxint = std::complex<int>;
 using veccxint = std::vector<cxint>;
 
+/**********************************************************/
+/*                         Tuple                          */
+/**********************************************************/
+
+/***************/
+/*     Sum     */
+/***************/
+
 BOOST_AUTO_TEST_CASE(pair_sum) {
 
 	auto res1 = std::make_pair(2, 2) + std::make_pair(1, 3);
@@ -38,21 +46,13 @@ BOOST_AUTO_TEST_CASE(tuple_sum) {
 	BOOST_TEST(str == "hello world!");
 }
 
-BOOST_AUTO_TEST_CASE(vector_sum) {
-	
-	veccxint a = { cxint(1, 2), cxint(2, -4) };
-	veccxint b = { cxint(1, -2), cxint(-5, 2) };
+/******************************************************/
+/*                     STL Vector                     */
+/******************************************************/
 
-	auto r1 = a + b;
-	auto r2 = a - b;
-	a += b;
-	b -= a;
-
-	BOOST_TEST(r1 == veccxint({ cxint(2, 0), cxint(-3, -2) }));
-	BOOST_TEST(r2 == veccxint({ cxint(0, 4), cxint(7, -6) }));
-	BOOST_TEST(a == r1);
-	BOOST_TEST(b == -(r1 + r2) / 2);
-}
+/***************/
+/*   Product   */
+/***************/
 
 BOOST_AUTO_TEST_CASE(vector_dotproduct) {
 
@@ -69,6 +69,15 @@ BOOST_AUTO_TEST_CASE(vector_dotproduct) {
 	BOOST_TEST(r3 / 2 == a);
 }
 
+BOOST_AUTO_TEST_CASE(vector_inplace_product) {
+
+	veccxint a = { cxint(1, 2), cxint(2, -4) };
+
+	a *= 2;
+
+	BOOST_TEST(a == veccxint({ cxint(2, 4), cxint(4, -8) }));
+}
+
 BOOST_AUTO_TEST_CASE(vector_kronecker_product) {
 
 	veccxint a = { cxint(1, 2), cxint(2, -4) };
@@ -78,4 +87,57 @@ BOOST_AUTO_TEST_CASE(vector_kronecker_product) {
 
 	BOOST_TEST(r1 == veccxint({ cxint(5, 0), cxint(-1, -12), cxint(-6, -8), cxint(-18, 16) }));
 }
+
+/****************/
+/*   Division   */
+/****************/
+
+BOOST_AUTO_TEST_CASE(vector_division) {
+
+	veccxint a = { cxint(5, 5), cxint(5, -5) };
+	veccxint b = { cxint(7, -7), cxint(-7, 7) };
+
+	auto x = a / 5;
+	b /= 7;
+
+	BOOST_TEST(x == veccxint({ cxint(1, 1), cxint(1, -1) }));
+	BOOST_TEST(b == veccxint({ cxint(1, -1), cxint(-1, 1) }));
+}
+
+/***************/
+/*     Sum     */
+/***************/
+
+BOOST_AUTO_TEST_CASE(vector_sum) {
+
+	veccxint a = { cxint(1, 2), cxint(2, -4) };
+	veccxint b = { cxint(1, -2), cxint(-5, 2) };
+
+	auto r1 = a + b;
+	auto r2 = a - b;
+	a += b;
+	b -= a;
+
+	BOOST_TEST(r1 == veccxint({ cxint(2, 0), cxint(-3, -2) }));
+	BOOST_TEST(r2 == veccxint({ cxint(0, 4), cxint(7, -6) }));
+	BOOST_TEST(a == r1);
+	BOOST_TEST(b == -(r1 + r2) / 2);
+}
+
+
+/******************************************************/
+/*                     STL Matrix                     */
+/******************************************************/
+
+/***************/
+/*   Product   */
+/***************/
+
+/***************/
+/*     Sum     */
+/***************/
+
+/***************/
+/*  Difference */
+/***************/
 

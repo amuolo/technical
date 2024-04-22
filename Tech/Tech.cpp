@@ -26,8 +26,9 @@ int main()
 		study.run_analysis();
 	} 
 	//while (study.get_result() == "O(n^2)");
-	while (study.get_result() == "O(1)");
-	//while (boost::algorithm::contains(study.get_result(), "log"));
+	//while (study.get_result() == "O(1)");
+	//while (boost::algorithm::contains(study.get_result(), "log"))
+	while ((study.get_result() == "O(1)" || boost::algorithm::contains(study.get_result(), "O(log")));
 
 	std::cout << std::endl << attempt << "   " << study.get_result() << std::endl << std::endl;
 

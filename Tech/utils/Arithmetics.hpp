@@ -96,7 +96,7 @@ std::vector<T> kronecker(const std::vector<T>& lhs, const std::vector<Q>& rhs)
 }
 
 template <class T, class S>
-inline std::vector<T>& operator *= (std::vector<T>& v, const S& a)
+inline std::vector<T>& operator *= (std::vector<T>& v, const S& a) requires(std::is_integral_v<S> || std::is_arithmetic_v<S>)
 {
 #pragma omp simd
 	for (size_t i = 0; i < v.size(); i++)
@@ -105,14 +105,14 @@ inline std::vector<T>& operator *= (std::vector<T>& v, const S& a)
 }
 
 template <class T, class S>
-inline std::vector<T> operator * (std::vector<T> v, const S& a) 
+inline std::vector<T> operator * (std::vector<T> v, const S& a) requires(std::is_integral_v<S> || std::is_arithmetic_v<S>)
 {
 	return v *= a;
 }
 
 
 template <class T, class S>
-inline std::vector<T> operator * (const S& a, std::vector<T> v) 
+inline std::vector<T> operator * (const S& a, std::vector<T> v) requires(std::is_integral_v<S> || std::is_arithmetic_v<S>)
 {
 	return v *= a;
 }
@@ -204,6 +204,10 @@ inline std::vector<T> operator - (std::vector<T> r)
 
 /***************/
 /*     Sum     */
+/***************/
+
+/***************/
+/*  Difference */
 /***************/
 
 
