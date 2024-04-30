@@ -6,8 +6,6 @@
 #include "StandardLibs.hpp"
 
 /**
- * Implementation of a trace facility for LSST
- *
  * interval_map<K,V> is a data structure that associates keys of type K with values of type V.
  * It is designed to be used efficiently in situations where intervals of consecutive keys are
  * associated with the same value. 

@@ -10,10 +10,10 @@ add_executable (Tech "Tech.cpp" "../vcpkg.json" "../vcpkg-configuration.json"
 "utils/Concepts.hpp"
 "utils/InputOutput.hpp"  
 "utils/IntervalMap.hpp" 
+"utils/IntervalSet.hpp"
 "utils/RandomMachine.hpp"  
 "utils/Resources.hpp"  
-"utils/StandardLibs.hpp"  
-)
+"utils/StandardLibs.hpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Tech PROPERTY CXX_STANDARD 20)

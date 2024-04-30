@@ -61,12 +61,14 @@ add_executable(Tests.Arithmetics "Tech/test/ArithmeticsTest.cpp")
 add_executable(Tests.Calculator "Tech/test/CalculatorTest.cpp")
 add_executable(Tests.InputOutput "Tech/test/InputOutputTest.cpp")
 add_executable(Tests.IntervalMap "Tech/test/IntervalMapTest.cpp")
+add_executable(Tests.IntervalSet "Tech/test/IntervalSetTest.cpp")
 
 target_link_libraries(Tests.AlgorithmComplexity Boost::unit_test_framework)
 target_link_libraries(Tests.Arithmetics Boost::unit_test_framework)
 target_link_libraries(Tests.Calculator Boost::unit_test_framework)
 target_link_libraries(Tests.InputOutput Boost::unit_test_framework)
 target_link_libraries(Tests.IntervalMap Boost::unit_test_framework)
+target_link_libraries(Tests.IntervalSet Boost::unit_test_framework)
 
 enable_testing()
 
@@ -75,6 +77,7 @@ add_test(NAME Tests.Arithmetics COMMAND Tests.Arithmetics)
 add_test(NAME Tests.Calculator COMMAND Tests.Calculator)
 add_test(NAME Tests.InputOutput COMMAND Tests.InputOutput)
 add_test(NAME Tests.IntervalMap COMMAND Tests.IntervalMap)
+add_test(NAME Tests.IntervalSet COMMAND Tests.IntervalSet)
 
 # Include sub-projects.
 add_subdirectory ("Tech")

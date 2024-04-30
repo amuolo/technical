@@ -11,6 +11,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <set>
 #include <map>
 #include <functional>
 #include <source_location>
