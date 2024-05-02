@@ -32,7 +32,7 @@ namespace tech
 				const auto index = indices[i];                       // O(1)
 				const auto& a = start[index];                        // O(1) 
 				const auto& z = finish[index];                       // O(1)
-				if (z > current_end_time) {
+				if (a > current_end_time) {
 					m_num++;
 					current_end_time = z;
 					if (a == z) {

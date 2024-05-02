@@ -26,6 +26,20 @@ BOOST_AUTO_TEST_CASE(simple_intervals_b) {
 	BOOST_TEST(intervals.IsIn(1) == true);
 	BOOST_TEST(intervals.IsIn(3) == true);
 	BOOST_TEST(intervals.IsIn(2) == true);
+	BOOST_TEST(intervals.IsIn(7) == false);
+}
+
+BOOST_AUTO_TEST_CASE(simple_intervals_c) {
+
+	auto intervals = tech::interval_set<int>();
+	intervals.assign({ 1, 3, 5 }, { 10, 4, 6 });
+
+	BOOST_TEST(intervals.count() == 2);
+	BOOST_TEST(intervals.IsIn(1) == false);
+	BOOST_TEST(intervals.IsIn(3) == true);
+	BOOST_TEST(intervals.IsIn(5) == true);
+	BOOST_TEST(intervals.IsIn(2) == false);
+	BOOST_TEST(intervals.IsIn(7) == false);
 }
 
 
