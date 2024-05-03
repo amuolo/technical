@@ -6,6 +6,20 @@
 
 #include <boost/test/included/unit_test.hpp>
 
+BOOST_AUTO_TEST_CASE(invalid_argument) {
+	
+	auto intervals = tech::interval_set<int>(tech::interval_set_mode::maximum);
+	bool excpt = false;
+	try {
+		intervals.assign({ 1, 3, 5 }, { 1, 3 });
+	}
+	catch (std::exception e)
+	{
+		excpt = true;
+	}
+	BOOST_TEST(excpt == true);
+}
+
 BOOST_AUTO_TEST_CASE(maximum_a) {
 
 	auto intervals = tech::interval_set<int>(tech::interval_set_mode::maximum);

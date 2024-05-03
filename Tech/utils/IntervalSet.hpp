@@ -68,6 +68,8 @@ namespace tech
 		}
 
 		void assign(std::vector<T> const& start, std::vector<T> const& finish) {
+			if (start.size() != finish.size())
+				throw std::invalid_argument("interval set assign: size mismatch.");
 			switch (m_mode)
 			{
 				case interval_set_mode::chronological: return assign_chronological(start, finish);
