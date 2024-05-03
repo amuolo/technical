@@ -57,6 +57,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 # Include Unit Tests
 add_executable(Tests.AlgorithmComplexity "Tech/test/AlgorithmComplexityTest.cpp")
+add_executable(Tests.Algorithms "Tech/test/AlgorithmsTest.cpp")
 add_executable(Tests.Arithmetics "Tech/test/ArithmeticsTest.cpp")
 add_executable(Tests.Calculator "Tech/test/CalculatorTest.cpp")
 add_executable(Tests.InputOutput "Tech/test/InputOutputTest.cpp")
@@ -64,6 +65,7 @@ add_executable(Tests.IntervalMap "Tech/test/IntervalMapTest.cpp")
 add_executable(Tests.IntervalSet "Tech/test/IntervalSetTest.cpp")
 
 target_link_libraries(Tests.AlgorithmComplexity Boost::unit_test_framework)
+target_link_libraries(Tests.Algorithms Boost::unit_test_framework)
 target_link_libraries(Tests.Arithmetics Boost::unit_test_framework)
 target_link_libraries(Tests.Calculator Boost::unit_test_framework)
 target_link_libraries(Tests.InputOutput Boost::unit_test_framework)
@@ -73,6 +75,7 @@ target_link_libraries(Tests.IntervalSet Boost::unit_test_framework)
 enable_testing()
 
 add_test(NAME Tests.AlgorithmComplexity COMMAND Tests.AlgorithmComplexity)
+add_test(NAME Tests.Algorithms COMMAND Tests.Algorithms)
 add_test(NAME Tests.Arithmetics COMMAND Tests.Arithmetics)
 add_test(NAME Tests.Calculator COMMAND Tests.Calculator)
 add_test(NAME Tests.InputOutput COMMAND Tests.InputOutput)

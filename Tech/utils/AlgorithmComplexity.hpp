@@ -220,7 +220,7 @@ namespace tech
 						break;
 					}
 
-					if (get_used_memory_percentage() > 95) {
+					if (resources::get_used_memory_percentage() > 95) {
 						m_status = "max memory exceeded";
 						break;
 					}

@@ -5,7 +5,7 @@
 
 #include <windows.h>
 
-namespace tech
+namespace tech::resources
 {
 	int get_used_memory_percentage()
 	{
