@@ -16,16 +16,8 @@ namespace tech
 
 	private:
 		interval_set_mode m_mode;
-		std::map<T, char> m_map;
+		std::map<T, bool> m_map;
 		int m_num;
-
-		void assign_chronological(T const& start, T const& finish) {
-			// TODO
-		}
-
-		void assign_maximum(T const& start, T const& finish) {
-			// TODO
-		}
 
 		void assign_chronological(std::vector<T> const& start, std::vector<T> const& finish) {
 			// TODO
@@ -33,24 +25,46 @@ namespace tech
 
 		void assign_maximum(std::vector<T> const& start, std::vector<T> const& finish) {
 			const auto& indices = tech::algorithms::sort_index(finish);     // O(n*log(n))
-			const int n = indices.size();
-			int current_end_time;
-			bool begin = true;
-			for (size_t i = 0; i < n; i++) {                                // O(n)
-				const auto index = indices[i];	                            // O(1)
-				const auto& a = start[index];                               // O(1) 
-				const auto& z = finish[index];                              // O(1)
-				if (begin || a > current_end_time) {
-					m_num++;
-					begin = false;
-					current_end_time = z;
-					if (a == z) {
-						m_map.insert(std::make_pair(a, 'm'));               // O(log(n))
-					}
-					else {
-						m_map.insert(std::make_pair(a, 'a'));               // O(log(n))
-						m_map.insert(std::make_pair(z, 'z'));               // O(log(n))
-					}
+
+			auto insert_fun = [&](T a, T z) {								// O(log(N))
+					m_map.insert(std::make_pair(a, true));
+					m_map.insert(std::make_pair(z, false));
+				};
+
+			for (size_t index : indices) {                                  // O(n)
+				const auto& a = start[index];
+				const auto& z = finish[index];
+				if (a >= z)
+					continue;
+
+				const auto& it = m_map.lower_bound(a);                      // O(log(N))
+				const auto& next = std::next(it);
+				const auto& prev = std::prev(it);
+
+				if (it == m_map.end()) {
+					insert_fun(a, z);
+				}
+				else if (it->first == a && !it->second && next->first > z) {
+					m_map.erase(a);
+					insert_fun(a, z);
+				}
+				else if (it->first == a && !it->second && it->first == z) {
+					m_map.erase(it, next);
+				}
+				else if (it->first == a && it->second && (next->first - it->first) > (z - a)) {
+					m_map.erase(it, next);
+					insert_fun(a, z);
+				}
+				else if (it->first > a && it->second && next->first > z && (next->first - it->first) > (z - a)) {
+					m_map.erase(it, next);
+					insert_fun(a, z);
+				}
+				else if (it->first > a && !it->second && next->first > z && (it->first - prev->first) > (z - a)) {
+					m_map.erase(prev, it);
+					insert_fun(a, z);
+				}
+				else if (it->first > a && !it->second && next->first > z && (it->first - prev->first) > (z - a)) {
+					m_map.erase(it, next);
 				}
 			}
 		}
@@ -62,8 +76,8 @@ namespace tech
 		void assign(T const& start, T const& finish) {
 			switch (m_mode)
 			{
-				case interval_set_mode::chronological: return assign_chronological(start, finish);
-				default: return assign_maximum(start, finish);
+				case interval_set_mode::chronological: return assign_chronological({ start }, { finish });
+				default: return assign_maximum({ start }, { finish });
 			};
 		}
 
@@ -82,9 +96,9 @@ namespace tech
 		}
 
 		bool IsIn(const T& key) const {
-			if (m_map.contains(key)) 
+			if (m_map.contains(key))                        // O(log(N))
 				return true;
-			const auto& it = m_map.lower_bound(key);        // O(n)
+			const auto& it = m_map.lower_bound(key);        // O(log(N))
 			if (it == m_map.end())
 				return false;
 			else if (it == m_map.begin())
