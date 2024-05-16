@@ -104,4 +104,23 @@ BOOST_AUTO_TEST_CASE(maximum_insert_twice) {
 	BOOST_TEST(intervals.contains(12) == false);
 }
 
+BOOST_AUTO_TEST_CASE(maximum_tricky_repetitive_inserts) {
+
+	auto intervals = tech::interval_set<int>(tech::interval_set_mode::maximum);
+	intervals.insert({ 1, 3, 8 }, { 10, 6, 15 });     // 3 6  8 15
+	intervals.insert({ 0, 2 }, { 1, 3 });             // 0 1  2 3  3 6  8 15
+
+	BOOST_TEST(intervals.count() == 4);
+	BOOST_TEST(intervals.contains(0) == true);
+	BOOST_TEST(intervals.contains(1) == false);
+	BOOST_TEST(intervals.contains(2) == true);
+	BOOST_TEST(intervals.contains(3) == true);
+	BOOST_TEST(intervals.contains(4) == true);
+	BOOST_TEST(intervals.contains(5) == true);
+	BOOST_TEST(intervals.contains(6) == false);
+	BOOST_TEST(intervals.contains(7) == false);
+	BOOST_TEST(intervals.contains(8) == true);
+	BOOST_TEST(intervals.contains(12) == true);
+}
+
 
