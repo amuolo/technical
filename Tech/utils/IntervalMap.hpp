@@ -5,36 +5,36 @@
 
 #include "StandardLibs.hpp"
 
-/**
- * interval_map<K,V> is a data structure that associates keys of type K with values of type V.
- * It is designed to be used efficiently in situations where intervals of consecutive keys are
- * associated with the same value. 
- * 
- * Each key value pair (k,v) in m_map means that the value v is associated with all keys 
- * from k (including) to the next key (excluding) in m_map. The m_valBegin holds the value that 
- * is associated with all keys less than the first key in m_map.
- *
- * The representation is canonical, i.e. consecutive map entries do not contain the same value.
- * Moreover, the following type constraints are met: 
- *		Key type K
- *		copyable, assignable, and less-than comparable via operator<
- *		Value type V
- *		copyable, assignable, and equality-comparable via operator==
- * 
- * Note: neither the key nor the value types need to be default-constructible. 
- * 
- * Example: m_valBegin = 'A', m_map = { (1,'B'), (3, 'A') }
- *		... 
- *		-1 -> 'A'
- *		 0 -> 'A'
- *		 1 -> 'B'
- *		 2 -> 'B'
- *		 3 -> 'A'
- *		...
- */
-
 namespace tech
 {
+	/**
+	 * interval_map<K,V> is a data structure that associates keys of type K with values of type V.
+	 * It is designed to be used efficiently in situations where intervals of consecutive keys are
+	 * associated with the same value.
+	 *
+	 * Each key value pair (k,v) in m_map means that the value v is associated with all keys
+	 * from k (including) to the next key (excluding) in m_map. The m_valBegin holds the value that
+	 * is associated with all keys less than the first key in m_map.
+	 *
+	 * The representation is canonical, i.e. consecutive map entries do not contain the same value.
+	 * Moreover, the following type constraints are met:
+	 *		Key type K
+	 *		copyable, assignable, and less-than comparable via operator<
+	 *		Value type V
+	 *		copyable, assignable, and equality-comparable via operator==
+	 *
+	 * Note: neither the key nor the value types need to be default-constructible.
+	 *
+	 * Example: m_valBegin = 'A', m_map = { (1,'B'), (3, 'A') }
+	 *		...
+	 *		-1 -> 'A'
+	 *		 0 -> 'A'
+	 *		 1 -> 'B'
+	 *		 2 -> 'B'
+	 *		 3 -> 'A'
+	 *		...
+	 */
+
 	template <typename K, typename V>
 	class interval_map {
 		friend static class IntervalMapTest;

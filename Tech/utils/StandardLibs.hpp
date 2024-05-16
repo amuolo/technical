@@ -24,6 +24,7 @@
 #include <numeric>
 #include <cmath>
 #include <limits>
+#include <algorithm>
 #include <ranges>
 #include <complex>
 #include <concepts>

@@ -8,6 +8,10 @@
 
 namespace tech
 {
+	/**
+	 * interval_set<T> is a data structure
+	 */
+
 	enum interval_set_mode { chronological, maximum };
 
 	template <typename T>
@@ -17,16 +21,17 @@ namespace tech
 	private:
 		interval_set_mode m_mode;
 		std::map<T, bool> m_map;
-		int m_num;
+		int m_N;
+		bool m_is_cache_valid;
 
-		void assign_chronological(std::vector<T> const& start, std::vector<T> const& finish) {
+		void insert_chronological_solid_intervals(std::vector<T> const& start, std::vector<T> const& finish) {
 			// TODO
 		}
 
-		void assign_maximum(std::vector<T> const& start, std::vector<T> const& finish) {
+		void insert_maximum_solid_intervals(std::vector<T> const& start, std::vector<T> const& finish) {
 			const auto& indices = tech::algorithms::sort_index(finish);     // O(n*log(n))
 
-			auto insert_fun = [&](T a, T z) {								// O(log(N))
+			auto insert_pair = [&](T a, T z) {								// O(log(N))
 					m_map.insert(std::make_pair(a, true));
 					m_map.insert(std::make_pair(z, false));
 				};
@@ -38,77 +43,109 @@ namespace tech
 					continue;
 
 				const auto& it = m_map.lower_bound(a);                      // O(log(N))
+
+				// very left or very right
+				if (it == m_map.end() || (it == m_map.begin() && it->first > z)) {
+					insert_pair(a, z);
+					continue;
+				}
+				else if (it == m_map.begin() && it->first == z) {
+					m_map.insert(std::make_pair(a, true));
+					continue;
+				}
+				else if (it == m_map.begin() && it->first < z && (std::next(it)->first - it->first) > (z - a)) {
+					m_map.erase(it, std::next(it));
+					insert_pair(a, z);
+					continue;
+				}
+
 				const auto& next = std::next(it);
 				const auto& prev = std::prev(it);
 
-				if (it == m_map.end()) {
-					insert_fun(a, z);
+				// left
+				if (it->second) {
+					if (it->first > z) {
+						insert_pair(a, z);
+					}
+					else if (it->first == z) {
+						m_map.insert(std::make_pair(a, true));
+					}
+					// overlapping
+					else if (a < it->first < z && (next->first - it->first) > (z - a)) {
+						m_map.erase(it, next);
+						insert_pair(a, z);
+					}
+					// inside
+					else if (it->first == a && next->first > z) {
+						m_map.erase(next);
+						m_map.insert(std::make_pair(z, false));
+					}
 				}
-				else if (it->first == a && !it->second && next->first > z) {
-					m_map.erase(a);
-					insert_fun(a, z);
-				}
-				else if (it->first == a && !it->second && it->first == z) {
-					m_map.erase(it, next);
-				}
-				else if (it->first == a && it->second && (next->first - it->first) > (z - a)) {
-					m_map.erase(it, next);
-					insert_fun(a, z);
-				}
-				else if (it->first > a && it->second && next->first > z && (next->first - it->first) > (z - a)) {
-					m_map.erase(it, next);
-					insert_fun(a, z);
-				}
-				else if (it->first > a && !it->second && next->first > z && (it->first - prev->first) > (z - a)) {
-					m_map.erase(prev, it);
-					insert_fun(a, z);
-				}
-				else if (it->first > a && !it->second && next->first > z && (it->first - prev->first) > (z - a)) {
-					m_map.erase(it, next);
+				// right
+				else if (!it->second) {
+					// inside
+					if (it->first >= z) {
+						m_map.erase(prev, it);
+						insert_pair(a, z);
+					}
+					// overlapping
+					else if (a < it->first < z && next->first > z && (it->first - prev->first) > (z - a)) {
+						m_map.erase(prev, it);
+						insert_pair(a, z);
+					}
+					else if (a < it->first < z && next->first == z && (it->first - prev->first) > (z - a)) {
+						m_map.erase(prev, it);
+						m_map.insert(std::make_pair(a, true));
+					}
 				}
 			}
 		}
 
 	public:
 
-		interval_set(interval_set_mode mode) : m_num(0), m_mode(mode) {}
+		interval_set(interval_set_mode mode) : m_N(0), m_mode(mode), m_is_cache_valid(true) {}
 
-		void assign(T const& start, T const& finish) {
+		void insert(T const& start, T const& finish) {
+			m_is_cache_valid = false;
 			switch (m_mode)
 			{
-				case interval_set_mode::chronological: return assign_chronological({ start }, { finish });
-				default: return assign_maximum({ start }, { finish });
+				case interval_set_mode::chronological: return insert_chronological_solid_intervals({ start }, { finish });
+				case interval_set_mode::maximum: return insert_maximum_solid_intervals({ start }, { finish });
+				default: return;
 			};
 		}
 
-		void assign(std::vector<T> const& start, std::vector<T> const& finish) {
+		void insert(std::vector<T> const& start, std::vector<T> const& finish) {
 			if (start.size() != finish.size())
-				throw std::invalid_argument("interval set assign: size mismatch.");
+				throw std::invalid_argument("interval set insert: size mismatch.");
+			m_is_cache_valid = false;
 			switch (m_mode)
 			{
-				case interval_set_mode::chronological: return assign_chronological(start, finish);
-				default: return assign_maximum(start, finish);
+				case interval_set_mode::chronological: return insert_chronological_solid_intervals(start, finish);
+				case interval_set_mode::maximum:  return insert_maximum_solid_intervals(start, finish);
+				default: return;
 			};
 		}
 
-		int count() const {
-			return m_num;
+		int count() {
+			if (m_is_cache_valid)
+				return m_N;
+			m_N = std::ranges::count_if(m_map, [](const auto& pair){ return pair.second == true; });
+			m_is_cache_valid = true;
+			return m_N;
 		}
 
-		bool IsIn(const T& key) const {
-			if (m_map.contains(key))                        // O(log(N))
-				return true;
-			const auto& it = m_map.lower_bound(key);        // O(log(N))
-			if (it == m_map.end())
+		bool contains(const T& key) const {
+			const auto& it = m_map.lower_bound(key);		           // O(log(N))
+
+			if (it == m_map.end() || it == m_map.begin() && key < it->first)
 				return false;
-			else if (it == m_map.begin())
-				return false;
-			else if (std::prev(it)->second == 'a')
+			else if (it->first == key && it->second)
 				return true;
-			else if (std::prev(it)->second == 'z')
+			else if (it != m_map.begin() && it->first > key && std::prev(it)->second)
 				return true;
-			else
-				return false;
+			
+			return false;
 		}
 	};
 

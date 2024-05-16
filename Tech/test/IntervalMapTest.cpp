@@ -38,7 +38,7 @@ namespace tech
 	};
 }
 
-BOOST_AUTO_TEST_CASE(insert_test) {
+BOOST_AUTO_TEST_CASE(assign_test) {
 	auto mapping = tech::interval_map<int, char>('A');
 
 	mapping.assign(1, 3, 'B');
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(insert_test) {
 	BOOST_TEST(tech::IntervalMapTest::getMap(mapping) == std::string(" 1 B  3 Z  5 C  7 A "));
 }
 
-BOOST_AUTO_TEST_CASE(insert_bis_test) {
+BOOST_AUTO_TEST_CASE(assign_bis_test) {
 	auto mapping = tech::interval_map<int, char>('A');
 
 	mapping.assign(3, 9, 'B');
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(insert_bis_test) {
 	BOOST_TEST(tech::IntervalMapTest::getMap(mapping) == std::string(" 3 B  5 Z  7 B  9 A "));
 }
 
-BOOST_AUTO_TEST_CASE(insert_before_test) {
+BOOST_AUTO_TEST_CASE(assign_before_test) {
 	auto mapping = tech::interval_map<int, char>('A');
 
 	mapping.assign(1, 3, 'B');
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(insert_before_test) {
 	BOOST_TEST(tech::IntervalMapTest::getMap(mapping) == std::string(" 1 Z  3 A  5 C  7 A "));
 }
 
-BOOST_AUTO_TEST_CASE(insert_before_bis_test) {
+BOOST_AUTO_TEST_CASE(assign_before_bis_test) {
 	auto mapping = tech::interval_map<int, char>('A');
 
 	mapping.assign(1, 3, 'B');
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(insert_before_bis_test) {
 	BOOST_TEST(tech::IntervalMapTest::getMap(mapping) == std::string(" -5 Z  -2 A  1 B  3 A  5 C  7 A "));
 }
 
-BOOST_AUTO_TEST_CASE(insert_before_tricky_test) {
+BOOST_AUTO_TEST_CASE(assign_before_tricky_test) {
 	auto mapping = tech::interval_map<int, char>('A');
 
 	mapping.assign(1, 5, 'B');
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(insert_before_tricky_test) {
 	BOOST_TEST(tech::IntervalMapTest::getMap(mapping) == std::string(" -1 Z  3 B  5 C  7 A "));
 }
 
-BOOST_AUTO_TEST_CASE(insert_complex_test) {
+BOOST_AUTO_TEST_CASE(assign_complex_test) {
 	auto mapping = tech::interval_map<int, char>('A');
 
 	mapping.assign(1, 3, 'B');
