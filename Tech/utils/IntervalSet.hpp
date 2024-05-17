@@ -12,13 +12,14 @@ namespace tech
 	 * interval_set<T> is a data structure that allows to store non-overlapping intervals of type T.
 	 * The type T does not need to be default-constructible but must implement the comparison operator <.
 	 * 
-	 * The class can operate in three different modes: 
+	 * The class can operate in four different modes: 
 	 *  - conservative: new intervals cannot replace old ones if there is an overlap
-	 *  - progressive: new intervals always replace old ones for which there is an overlap
+	 *  - progressive: new intervals always replace old ones for which there is an overlap, i.e. the newest win
 	 *  - maximum: novel intervals can replace old ones if this leads to an increase of the maximum possible number of intervals
+	 *  - fluid: new intervals are inserted by modifying the borders of previously inserted intervals
 	 */
 
-	enum interval_set_mode { conservative, progressive, maximum };
+	enum interval_set_mode { conservative, progressive, maximum, fluid };
 
 	template <typename T>
 	class interval_set {
@@ -38,10 +39,17 @@ namespace tech
 			// TODO
 		}
 
+		void insert_fluid_solid_intervals(std::vector<T> const& start, std::vector<T> const& finish, int n) {
+			// TODO
+		}
+
 		void insert_maximum_solid_intervals(std::vector<T> const& start, std::vector<T> const& finish, int n) {
 			const auto inner_insert = [&](const T& a, const T& b) {
 					const auto result = m_map.insert(std::make_pair(a, true));
-					if (not result.second) { result.first->second = true; }
+					if (not result.second) { 
+						m_map.erase(a);
+						m_map.insert(std::make_pair(a, true));
+					}
 					m_map.insert(std::make_pair(b, false));
 				};
 
@@ -116,6 +124,7 @@ namespace tech
 				case interval_set_mode::conservative: return insert_conservative_solid_intervals({ start }, { finish }, 1);
 				case interval_set_mode::progressive: return insert_progressive_solid_intervals({ start }, { finish }, 1);
 				case interval_set_mode::maximum: return insert_maximum_solid_intervals({ start }, { finish }, 1);
+				case interval_set_mode::fluid: return insert_fluid_solid_intervals({ start }, { finish }, 1);
 				default: return;
 			};
 		}
@@ -130,6 +139,7 @@ namespace tech
 				case interval_set_mode::conservative: return insert_conservative_solid_intervals(start, finish, n);
 				case interval_set_mode::progressive: return insert_progressive_solid_intervals(start, finish, n);
 				case interval_set_mode::maximum:  return insert_maximum_solid_intervals(start, finish, n);
+				case interval_set_mode::fluid:  return insert_fluid_solid_intervals(start, finish, n);
 				default: return;
 			};
 		}
