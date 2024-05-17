@@ -24,21 +24,18 @@ namespace tech
 		int m_N;
 		bool m_is_cache_valid;
 
-		void insert_chronological_solid_intervals(std::vector<T> const& start, std::vector<T> const& finish) {
+		void insert_chronological_solid_intervals(std::vector<T> const& start, std::vector<T> const& finish, int n) {
 			// TODO
 		}
 
-		void insert_maximum_solid_intervals(std::vector<T> const& start, std::vector<T> const& finish) {
-			const auto& indices = tech::algorithms::sort_index(finish);     // O(n*log(n))
-
+		void insert_maximum_solid_intervals(std::vector<T> const& start, std::vector<T> const& finish, int n) {
 			auto insert_pair = [&](T a, T z) {								// O(log(N))
 					m_map.insert(std::make_pair(a, true));
 					m_map.insert(std::make_pair(z, false));
 				};
 
-			for (size_t index : indices) {                                  // O(n)
-				const auto& a = start[index];
-				const auto& z = finish[index];
+			for (size_t i = 0; i < n; i++) {								// O(n)
+				const T& a = start[i], z = finish[i];
 				if (a >= z)
 					continue;
 
@@ -72,12 +69,13 @@ namespace tech
 					}
 					// overlapping
 					else if (a < it->first < z && (next->first - it->first) > (z - a)) {
-						m_map.erase(it, next);
+						m_map.erase(it->first);
+						m_map.erase(next->first);
 						insert_pair(a, z);
 					}
 					// inside
 					else if (it->first == a && next->first > z) {
-						m_map.erase(next);
+						m_map.erase(next->first);
 						m_map.insert(std::make_pair(z, false));
 					}
 				}
@@ -85,16 +83,16 @@ namespace tech
 				else if (!it->second) {
 					// inside
 					if (it->first >= z) {
-						m_map.erase(prev, it);
+						m_map.erase(prev, next);
 						insert_pair(a, z);
 					}
 					// overlapping
 					else if (a < it->first < z && next->first > z && (it->first - prev->first) > (z - a)) {
-						m_map.erase(prev, it);
+						m_map.erase(prev, next);
 						insert_pair(a, z);
 					}
 					else if (a < it->first < z && next->first == z && (it->first - prev->first) > (z - a)) {
-						m_map.erase(prev, it);
+						m_map.erase(prev, next);
 						m_map.insert(std::make_pair(a, true));
 					}
 				}
@@ -109,20 +107,21 @@ namespace tech
 			m_is_cache_valid = false;
 			switch (m_mode)
 			{
-				case interval_set_mode::chronological: return insert_chronological_solid_intervals({ start }, { finish });
-				case interval_set_mode::maximum: return insert_maximum_solid_intervals({ start }, { finish });
+				case interval_set_mode::chronological: return insert_chronological_solid_intervals({ start }, { finish }, 1);
+				case interval_set_mode::maximum: return insert_maximum_solid_intervals({ start }, { finish }, 1);
 				default: return;
 			};
 		}
 
 		void insert(std::vector<T> const& start, std::vector<T> const& finish) {
-			if (start.size() != finish.size())
+			auto n = start.size();
+			if (n != finish.size())
 				throw std::invalid_argument("interval set insert: size mismatch.");
 			m_is_cache_valid = false;
 			switch (m_mode)
 			{
-				case interval_set_mode::chronological: return insert_chronological_solid_intervals(start, finish);
-				case interval_set_mode::maximum:  return insert_maximum_solid_intervals(start, finish);
+				case interval_set_mode::chronological: return insert_chronological_solid_intervals(start, finish, n);
+				case interval_set_mode::maximum:  return insert_maximum_solid_intervals(start, finish, n);
 				default: return;
 			};
 		}
