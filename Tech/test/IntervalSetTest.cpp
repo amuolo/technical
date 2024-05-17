@@ -199,5 +199,144 @@ BOOST_AUTO_TEST_CASE(maximum_chain_of_intervals) {
 	BOOST_TEST(intervals.contains(9) == true);
 	BOOST_TEST(intervals.contains(10) == false);
 }
+
+BOOST_AUTO_TEST_CASE(maximum_in_consecutive_intervals) {
+	auto intervals = tech::interval_set<int>(tech::interval_set_mode::maximum);
+	intervals.insert({ 0, 5 }, { 5, 9 });
+	intervals.insert(2, 3);
+
+	BOOST_TEST(intervals.count() == 2);
+	BOOST_TEST(intervals.contains(0) == false);
+	BOOST_TEST(intervals.contains(1) == false);
+	BOOST_TEST(intervals.contains(2) == true);
+	BOOST_TEST(intervals.contains(3) == false);
+	BOOST_TEST(intervals.contains(4) == false);
+	BOOST_TEST(intervals.contains(5) == true);
+	BOOST_TEST(intervals.contains(6) == true);
+}
+
+BOOST_AUTO_TEST_CASE(maximum_insert_between) {
+	auto intervals = tech::interval_set<int>(tech::interval_set_mode::maximum);
+	intervals.insert({ 0, 5 }, { 2, 9 });
+	intervals.insert(3, 4);
+
+	BOOST_TEST(intervals.count() == 3);
+	BOOST_TEST(intervals.contains(0) == true);
+	BOOST_TEST(intervals.contains(1) == true);
+	BOOST_TEST(intervals.contains(2) == false);
+	BOOST_TEST(intervals.contains(3) == true);
+	BOOST_TEST(intervals.contains(4) == false);
+	BOOST_TEST(intervals.contains(5) == true);
+	BOOST_TEST(intervals.contains(6) == true);
+}
+
+BOOST_AUTO_TEST_CASE(maximum_insert_between_bis) {
+	auto intervals = tech::interval_set<int>(tech::interval_set_mode::maximum);
+	intervals.insert({ 0, 5 }, { 2, 9 });
+	intervals.insert(3, 5);
+
+	BOOST_TEST(intervals.count() == 3);
+	BOOST_TEST(intervals.contains(0) == true);
+	BOOST_TEST(intervals.contains(1) == true);
+	BOOST_TEST(intervals.contains(2) == false);
+	BOOST_TEST(intervals.contains(3) == true);
+	BOOST_TEST(intervals.contains(4) == true);
+	BOOST_TEST(intervals.contains(5) == true);
+	BOOST_TEST(intervals.contains(6) == true);
+}
+
+BOOST_AUTO_TEST_CASE(maximum_insert_inside) {
+	auto intervals = tech::interval_set<int>(tech::interval_set_mode::maximum);
+	intervals.insert({ 0, 2, 6 }, { 2, 5, 8 });    // 0 2  2 5  6 8
+	intervals.insert(0, 1);
+	intervals.insert(2, 3);                        // 0 1  2 3  6 8
+
+	BOOST_TEST(intervals.count() == 3);
+	BOOST_TEST(intervals.contains(0) == true);
+	BOOST_TEST(intervals.contains(1) == false);
+	BOOST_TEST(intervals.contains(2) == true);
+	BOOST_TEST(intervals.contains(3) == false);
+	BOOST_TEST(intervals.contains(4) == false);
+	BOOST_TEST(intervals.contains(5) == false);
+	BOOST_TEST(intervals.contains(6) == true);
+}
+
+BOOST_AUTO_TEST_CASE(maximum_insert_from_right) {
+	auto intervals = tech::interval_set<int>(tech::interval_set_mode::maximum);
+	intervals.insert({ 0, 5 }, { 3, 8 });    // 0 3  5 8
+	intervals.insert(3, 4);                  // 0 3  3 4  5 8
+	intervals.insert(4, 6);                  // 0 3  3 4  4 6
+	intervals.insert(3, 5);
+
+	BOOST_TEST(intervals.count() == 3);
+	BOOST_TEST(intervals.contains(0) == true);
+	BOOST_TEST(intervals.contains(1) == true);
+	BOOST_TEST(intervals.contains(2) == true);
+	BOOST_TEST(intervals.contains(3) == true);
+	BOOST_TEST(intervals.contains(4) == true);
+	BOOST_TEST(intervals.contains(5) == true);
+	BOOST_TEST(intervals.contains(6) == false);
+	BOOST_TEST(intervals.contains(7) == false);
+}
+
+BOOST_AUTO_TEST_CASE(maximum_insert_from_right_1) {
+	auto intervals = tech::interval_set<int>(tech::interval_set_mode::maximum);
+	intervals.insert({ 0 }, { 5 });
+	intervals.insert(3, 5);
+
+	BOOST_TEST(intervals.count() == 1);
+	BOOST_TEST(intervals.contains(0) == false);
+	BOOST_TEST(intervals.contains(1) == false);
+	BOOST_TEST(intervals.contains(2) == false);
+	BOOST_TEST(intervals.contains(3) == true);
+	BOOST_TEST(intervals.contains(4) == true);
+	BOOST_TEST(intervals.contains(5) == false);
+	BOOST_TEST(intervals.contains(6) == false);
+}
+
+BOOST_AUTO_TEST_CASE(maximum_insert_from_right_2) {
+	auto intervals = tech::interval_set<int>(tech::interval_set_mode::maximum);
+	intervals.insert({ 0, 5 }, { 3, 8 });    // 0 3  5 8
+	intervals.insert(2, 4);
+
+	BOOST_TEST(intervals.count() == 2);
+	BOOST_TEST(intervals.contains(0) == false);
+	BOOST_TEST(intervals.contains(1) == false);
+	BOOST_TEST(intervals.contains(2) == true);
+	BOOST_TEST(intervals.contains(3) == true);
+	BOOST_TEST(intervals.contains(4) == false);
+	BOOST_TEST(intervals.contains(5) == true);
+	BOOST_TEST(intervals.contains(6) == true);
+}
+
+BOOST_AUTO_TEST_CASE(maximum_insert_from_right_3) {
+	auto intervals = tech::interval_set<int>(tech::interval_set_mode::maximum);
+	intervals.insert({ 0, 5 }, { 3, 8 });    // 0 3  5 8
+	intervals.insert(2, 6);
+
+	BOOST_TEST(intervals.count() == 2);
+	BOOST_TEST(intervals.contains(0) == true);
+	BOOST_TEST(intervals.contains(1) == true);
+	BOOST_TEST(intervals.contains(2) == true);
+	BOOST_TEST(intervals.contains(3) == false);
+	BOOST_TEST(intervals.contains(4) == false);
+	BOOST_TEST(intervals.contains(5) == true);
+	BOOST_TEST(intervals.contains(6) == true);
+}
+
+BOOST_AUTO_TEST_CASE(maximum_insert_from_right_4) {
+	auto intervals = tech::interval_set<int>(tech::interval_set_mode::maximum);
+	intervals.insert({ 0, 5 }, { 4, 8 });    // 0 4  5 8
+	intervals.insert(2, 5);                  // 2 5  5 8
+
+	BOOST_TEST(intervals.count() == 2);
+	BOOST_TEST(intervals.contains(0) == false);
+	BOOST_TEST(intervals.contains(1) == false);
+	BOOST_TEST(intervals.contains(2) == true);
+	BOOST_TEST(intervals.contains(3) == true);
+	BOOST_TEST(intervals.contains(4) == true);
+	BOOST_TEST(intervals.contains(5) == true);
+	BOOST_TEST(intervals.contains(6) == true);
+}
  
 

@@ -9,10 +9,16 @@
 namespace tech
 {
 	/**
-	 * interval_set<T> is a data structure
+	 * interval_set<T> is a data structure that allows to store non-overlapping intervals of type T.
+	 * The type T does not need to be default-constructible but must implement the comparison operator <.
+	 * 
+	 * The class can operate in three different modes: 
+	 *  - conservative: new intervals cannot replace old ones if there is an overlap
+	 *  - progressive: new intervals always replace old ones for which there is an overlap
+	 *  - maximum: novel intervals can replace old ones if this leads to an increase of the maximum possible number of intervals
 	 */
 
-	enum interval_set_mode { chronological, maximum };
+	enum interval_set_mode { conservative, progressive, maximum };
 
 	template <typename T>
 	class interval_set {
@@ -24,14 +30,26 @@ namespace tech
 		int m_N;
 		bool m_is_cache_valid;
 
-		void insert_chronological_solid_intervals(std::vector<T> const& start, std::vector<T> const& finish, int n) {
+		void insert_conservative_solid_intervals(std::vector<T> const& start, std::vector<T> const& finish, int n) {
+			// TODO
+		}
+
+		void insert_progressive_solid_intervals(std::vector<T> const& start, std::vector<T> const& finish, int n) {
 			// TODO
 		}
 
 		void insert_maximum_solid_intervals(std::vector<T> const& start, std::vector<T> const& finish, int n) {
-			auto insert_pair = [&](T a, T z) {								// O(log(N))
-					m_map.insert(std::make_pair(a, true));
-					m_map.insert(std::make_pair(z, false));
+			const auto inner_insert = [&](const T& a, const T& b) {
+					const auto result = m_map.insert(std::make_pair(a, true));
+					if (not result.second) { result.first->second = true; }
+					m_map.insert(std::make_pair(b, false));
+				};
+
+			const auto inner_erase = [&](const std::map<T, bool>::iterator& it) {
+					if (it != m_map.end() && it != m_map.begin() && std::prev(it)->second)
+						it->second = false;
+					else if (it != m_map.end())
+						m_map.erase(it->first);
 				};
 
 			for (size_t i = 0; i < n; i++) {								// O(n)
@@ -41,106 +59,50 @@ namespace tech
 
 				const auto& it = m_map.lower_bound(a);                      // O(log(N))
 
-				// very left or very right
 				if (it == m_map.end()) {
-					insert_pair(a, z);
+					inner_insert(a, z);
 					continue;
 				}
 
 				const T& x = it->first;
 				const auto& next = std::next(it);
 
-				if (it == m_map.begin() && x != a) {
-					if (x > z) {
-						insert_pair(a, z);
-					}
-					else if (x == z) {
-						m_map.insert(std::make_pair(a, true));
-					}
-					else if (x < z && (next->first - x) > (z - a)) {
-						m_map.erase(it, next);
-						insert_pair(a, z);
-					}
-					continue;
-				}
-				
-				const auto& prev = std::prev(it);
-
 				// left
-				if (it->second && x > a) {
-					if (x > z) {
-						erase(prev);
-						insert_pair(a, z);
+				if (it->second) {
+					if (x >= z) {  // outside
+						if (it != m_map.begin() && std::prev(it)->second)
+							inner_erase(std::prev(it));
+						inner_insert(a, z);
 					}
-					else if (x == z) {
-						erase(prev);
-						m_map.insert(std::make_pair(a, true));
-					}
-					// overlapping
-					else if (x < z && (next->first - x) >(z - a)) {
-						erase(it);
-						erase(next);
-						insert_pair(a, z);
-					}
-				}
-				else if (it->second && x == a) {
-					// inside
-					if (next->first > z) {
-						erase(next);
-						m_map.insert(std::make_pair(z, false));
+					else if (x < z && (next->first - x) > (z - a)) {  // overlapping
+						inner_erase(it);
+						inner_erase(next);
+						inner_insert(a, z);
 					}
 				}
 				// right
 				else if (!it->second && x > a) {
-					// inside
-					if (x >= z) {
-						erase(prev);
-						erase(it);
-						insert_pair(a, z);
-					}
-					// overlapping
-					else if (x < z && next != m_map.end() && next->first > z && (x - prev->first) > (z - a)) {
-						erase(prev);
-						erase(it);
-						insert_pair(a, z);
-					}
-					else if (x < z && next != m_map.end() && next->first == z && (x - prev->first) > (z - a)) {
-						erase(prev);
-						erase(it);
-						m_map.insert(std::make_pair(a, true));
-					}
-					else if (x < z && next == m_map.end() && (x - prev->first) >(z - a)) {
-						erase(prev);
-						erase(it);
-						insert_pair(a, z);
+					const auto& prev = std::prev(it);
+					if ((x >= z) ||  // inside
+						(x < z && next != m_map.end() && next->first >= z && (x - prev->first) > (z - a)) ||  // overlapping
+						(x < z && next == m_map.end() && (x - prev->first) > (z - a))) {
+						inner_erase(prev);
+						inner_erase(it);
+						inner_insert(a, z);
 					}
 				}
 				else if (!it->second && x == a) {
-					if (next != m_map.end() && next->first > z) {
-						m_map.erase(x);
-						insert_pair(a, z);
+					if ((next == m_map.end()) ||  // outside
+						(next != m_map.end() && next->first >= z)) { // overlapping
+						inner_insert(a, z);
 					}
-					else if (next != m_map.end() && next->first == z) {
-						m_map.erase(x);
-						m_map.insert(std::make_pair(a, true));
-					}
-					else if (next != m_map.end() && next->first < z && (std::next(next)->first - next->first) >(z - a)) {
-						m_map.erase(it, std::next(std::next(next)));
-						insert_pair(a, z);
-					}
-					else if (next == m_map.end()) {
-						m_map.erase(x);
-						insert_pair(a, z);
+					else if (next != m_map.end() && next->first < z && (std::next(next)->first - next->first) >(z - a)) {  // overlapping
+						inner_erase(std::next(next));
+						inner_erase(next);
+						inner_insert(a, z);
 					}
 				}
 			}
-		}
-
-		void erase(const std::map<T, bool>::iterator& it) {
-			if (it != m_map.end() && it != m_map.begin() && std::prev(it)->second)
-				it->second = false;
-			else if (it != m_map.end())
-				m_map.erase(it->first);
 		}
 
 	public:
@@ -151,7 +113,8 @@ namespace tech
 			m_is_cache_valid = false;
 			switch (m_mode)
 			{
-				case interval_set_mode::chronological: return insert_chronological_solid_intervals({ start }, { finish }, 1);
+				case interval_set_mode::conservative: return insert_conservative_solid_intervals({ start }, { finish }, 1);
+				case interval_set_mode::progressive: return insert_progressive_solid_intervals({ start }, { finish }, 1);
 				case interval_set_mode::maximum: return insert_maximum_solid_intervals({ start }, { finish }, 1);
 				default: return;
 			};
@@ -164,7 +127,8 @@ namespace tech
 			m_is_cache_valid = false;
 			switch (m_mode)
 			{
-				case interval_set_mode::chronological: return insert_chronological_solid_intervals(start, finish, n);
+				case interval_set_mode::conservative: return insert_conservative_solid_intervals(start, finish, n);
+				case interval_set_mode::progressive: return insert_progressive_solid_intervals(start, finish, n);
 				case interval_set_mode::maximum:  return insert_maximum_solid_intervals(start, finish, n);
 				default: return;
 			};

@@ -173,7 +173,7 @@ public:
 	int myInt;
 	myKey(int i) : myInt(i) {};
 
-	friend bool operator< (const myKey a, const myKey b) { return a.myInt < b.myInt; };
+	friend bool operator < (const myKey a, const myKey b) { return a.myInt < b.myInt; };
 };
 
 class myValue {
@@ -181,7 +181,7 @@ public:
 	int myInt;
 	myValue(int i) : myInt(i) {};
 
-	bool operator== (const myValue item) { return item.myInt == this->myInt; }
+	bool operator == (const myValue item) { return item.myInt == this->myInt; }
 };
 
 BOOST_AUTO_TEST_CASE(type_requirements_test) {
