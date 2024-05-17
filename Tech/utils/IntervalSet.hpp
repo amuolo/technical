@@ -42,61 +42,105 @@ namespace tech
 				const auto& it = m_map.lower_bound(a);                      // O(log(N))
 
 				// very left or very right
-				if (it == m_map.end() || (it == m_map.begin() && it->first > z)) {
-					insert_pair(a, z);
-					continue;
-				}
-				else if (it == m_map.begin() && it->first == z) {
-					m_map.insert(std::make_pair(a, true));
-					continue;
-				}
-				else if (it == m_map.begin() && it->first < z && (std::next(it)->first - it->first) > (z - a)) {
-					m_map.erase(it, std::next(it));
+				if (it == m_map.end()) {
 					insert_pair(a, z);
 					continue;
 				}
 
+				const T& x = it->first;
 				const auto& next = std::next(it);
+
+				if (it == m_map.begin() && x != a) {
+					if (x > z) {
+						insert_pair(a, z);
+					}
+					else if (x == z) {
+						m_map.insert(std::make_pair(a, true));
+					}
+					else if (x < z && (next->first - x) > (z - a)) {
+						m_map.erase(it, next);
+						insert_pair(a, z);
+					}
+					continue;
+				}
+				
 				const auto& prev = std::prev(it);
 
 				// left
-				if (it->second) {
-					if (it->first > z) {
+				if (it->second && x > a) {
+					if (x > z) {
+						erase(prev);
 						insert_pair(a, z);
 					}
-					else if (it->first == z) {
+					else if (x == z) {
+						erase(prev);
 						m_map.insert(std::make_pair(a, true));
 					}
 					// overlapping
-					else if (a < it->first < z && (next->first - it->first) > (z - a)) {
-						m_map.erase(it->first);
-						m_map.erase(next->first);
+					else if (x < z && (next->first - x) >(z - a)) {
+						erase(it);
+						erase(next);
 						insert_pair(a, z);
 					}
+				}
+				else if (it->second && x == a) {
 					// inside
-					else if (it->first == a && next->first > z) {
-						m_map.erase(next->first);
+					if (next->first > z) {
+						erase(next);
 						m_map.insert(std::make_pair(z, false));
 					}
 				}
 				// right
-				else if (!it->second) {
+				else if (!it->second && x > a) {
 					// inside
-					if (it->first >= z) {
-						m_map.erase(prev, next);
+					if (x >= z) {
+						erase(prev);
+						erase(it);
 						insert_pair(a, z);
 					}
 					// overlapping
-					else if (a < it->first < z && next->first > z && (it->first - prev->first) > (z - a)) {
-						m_map.erase(prev, next);
+					else if (x < z && next != m_map.end() && next->first > z && (x - prev->first) > (z - a)) {
+						erase(prev);
+						erase(it);
 						insert_pair(a, z);
 					}
-					else if (a < it->first < z && next->first == z && (it->first - prev->first) > (z - a)) {
-						m_map.erase(prev, next);
+					else if (x < z && next != m_map.end() && next->first == z && (x - prev->first) > (z - a)) {
+						erase(prev);
+						erase(it);
 						m_map.insert(std::make_pair(a, true));
+					}
+					else if (x < z && next == m_map.end() && (x - prev->first) >(z - a)) {
+						erase(prev);
+						erase(it);
+						insert_pair(a, z);
+					}
+				}
+				else if (!it->second && x == a) {
+					if (next != m_map.end() && next->first > z) {
+						m_map.erase(x);
+						insert_pair(a, z);
+					}
+					else if (next != m_map.end() && next->first == z) {
+						m_map.erase(x);
+						m_map.insert(std::make_pair(a, true));
+					}
+					else if (next != m_map.end() && next->first < z && (std::next(next)->first - next->first) >(z - a)) {
+						m_map.erase(it, std::next(std::next(next)));
+						insert_pair(a, z);
+					}
+					else if (next == m_map.end()) {
+						m_map.erase(x);
+						insert_pair(a, z);
 					}
 				}
 			}
+		}
+
+		void erase(const std::map<T, bool>::iterator& it) {
+			if (it != m_map.end() && it != m_map.begin() && std::prev(it)->second)
+				it->second = false;
+			else if (it != m_map.end())
+				m_map.erase(it->first);
 		}
 
 	public:
