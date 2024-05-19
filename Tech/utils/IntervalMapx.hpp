@@ -27,7 +27,12 @@ namespace tech
 
 	private:
 		
-		std::map<K, V> m_map;
+		struct feature {
+			bool start;
+			V value;
+		};
+
+		std::map<K, feature> m_map;
 		V m_valBegin;
 		int m_N;
 
@@ -50,20 +55,20 @@ namespace tech
 
 		void insert_maximum_solid_intervals(std::vector<K> const& start, std::vector<K> const& finish, std::vector<V> const& vals, int n) {
 			const auto inner_insert = [&](const K& a, const K& b, const V& val) {
-				const auto result = m_map.insert(std::make_pair(a, true));
+				const auto result = m_map.insert(std::make_pair(a, feature(true, val)));
 				if (not result.second) {
 					m_map.erase(a);
-					m_map.insert(std::make_pair(a, true));
+					m_map.insert(std::make_pair(a, feature(true, val)));
 				}
-				m_map.insert(std::make_pair(b, false));
-				};
+				m_map.insert(std::make_pair(b, feature(false, val)));
+			};
 
-			const auto inner_erase = [&](const std::map<K, V>::iterator& it) {
-				if (it != m_map.end() && it != m_map.begin() && std::prev(it)->second)
-					it->second = false;
+			const auto inner_erase = [&](const std::map<K, feature>::iterator& it) {
+				if (it != m_map.end() && it != m_map.begin() && std::prev(it)->second.start)
+					it->second.start = false;
 				else if (it != m_map.end())
 					m_map.erase(it->first);
-				};
+			};
 
 			for (size_t i = 0; i < n; i++) {								// O(n)
 				const K& a = start[i], z = finish[i];
@@ -74,7 +79,7 @@ namespace tech
 				const auto& it = m_map.lower_bound(a);                      // O(log(N))
 
 				if (it == m_map.end()) {
-					inner_insert(a, z);
+					inner_insert(a, z, val);
 					continue;
 				}
 
@@ -82,38 +87,38 @@ namespace tech
 				const auto& next = std::next(it);
 
 				// left
-				if (it->second) {
+				if (it->second.start) {
 					if (x >= z) {  // outside
-						if (it != m_map.begin() && std::prev(it)->second)
+						if (it != m_map.begin() && std::prev(it)->second.start)
 							inner_erase(std::prev(it));
-						inner_insert(a, z);
+						inner_insert(a, z, val);
 					}
 					else if (x < z && (next->first - x) >(z - a)) {  // overlapping
 						inner_erase(it);
 						inner_erase(next);
-						inner_insert(a, z);
+						inner_insert(a, z, val);
 					}
 				}
 				// right
-				else if (!it->second && x > a) {
+				else if (!it->second.start && x > a) {
 					const auto& prev = std::prev(it);
 					if ((x >= z) ||  // inside
 						(x < z && next != m_map.end() && next->first >= z && (x - prev->first) >(z - a)) ||  // overlapping
 						(x < z && next == m_map.end() && (x - prev->first) >(z - a))) {
 						inner_erase(prev);
 						inner_erase(it);
-						inner_insert(a, z);
+						inner_insert(a, z, val);
 					}
 				}
-				else if (!it->second && x == a) {
+				else if (!it->second.start && x == a) {
 					if ((next == m_map.end()) ||  // outside
 						(next != m_map.end() && next->first >= z)) { // overlapping
-						inner_insert(a, z);
+						inner_insert(a, z, val);
 					}
 					else if (next != m_map.end() && next->first < z && (std::next(next)->first - next->first) >(z - a)) {  // overlapping
 						inner_erase(std::next(next));
 						inner_erase(next);
-						inner_insert(a, z);
+						inner_insert(a, z, val);
 					}
 				}
 			}
@@ -153,7 +158,7 @@ namespace tech
 		int count() {
 			if (m_is_cache_valid)
 				return m_N;
-			m_N = std::ranges::count_if(m_map, [](const auto& pair) { return pair.second == true; });
+			m_N = std::ranges::count_if(m_map, [](const auto& pair) { return pair.second.start == true; });
 			m_is_cache_valid = true;
 			return m_N;
 		}
@@ -163,9 +168,9 @@ namespace tech
 
 			if (it == m_map.end() || it == m_map.begin() && key < it->first)
 				return false;
-			else if (it->first == key && it->second)
+			else if (it->first == key && it->second.start)
 				return true;
-			else if (it != m_map.begin() && it->first > key && std::prev(it)->second)
+			else if (it != m_map.begin() && it->first > key && std::prev(it)->second.start)
 				return true;
 
 			return false;
