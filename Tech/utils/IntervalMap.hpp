@@ -17,11 +17,11 @@ namespace tech
 	 * is associated with all keys less than the first key in m_map.
 	 *
 	 * The representation is canonical, i.e. consecutive map entries do not contain the same value.
-	 * Moreover, the following type constraints are met:
+	 * Moreover, the following type constraints must be met:
 	 *		Key type K
-	 *		copyable, assignable, and less-than comparable via operator<
+	 *		copyable, assignable, and less-than comparable via operator <
 	 *		Value type V
-	 *		copyable, assignable, and equality-comparable via operator==
+	 *		copyable, assignable, and equality-comparable via operator ==
 	 *
 	 * Note: neither the key nor the value types need to be default-constructible.
 	 *

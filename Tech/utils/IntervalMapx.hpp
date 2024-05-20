@@ -17,6 +17,12 @@ namespace tech
 	 *  - progressive: new intervals always replace old ones for which there is an overlap, i.e. the newest win
 	 *  - maximum: novel intervals can replace old ones if this leads to an increase of the maximum possible number of intervals
 	 *  - fluid: new intervals are inserted by modifying the borders of previously inserted intervals
+	 * 
+	 * 	The following type constraints must be met:
+	 *		Key type K
+	 *		copyable, assignable, subtractable, and less-than comparable via operators < and <=
+	 *		Value type V
+	 *		copyable, assignable, and equality-comparable via operator ==
 	 */
 
 	enum insert_mode { conservative, progressive, maximum, fluid };
@@ -73,7 +79,7 @@ namespace tech
 			for (size_t i = 0; i < n; i++) {								// O(n)
 				const K& a = start[i], z = finish[i];
 				const V& val = vals[i];
-				if (a >= z)
+				if (z <= a)
 					continue;
 
 				const auto& it = m_map.lower_bound(a);                      // O(log(N))
@@ -88,34 +94,34 @@ namespace tech
 
 				// left
 				if (it->second.start) {
-					if (x >= z) {  // outside
+					if (z <= x) {  // outside
 						if (it != m_map.begin() && std::prev(it)->second.start)
 							inner_erase(std::prev(it));
 						inner_insert(a, z, val);
 					}
-					else if (x < z && (next->first - x) >(z - a)) {  // overlapping
+					else if (x < z && (z - a) < (next->first - x)) {  // overlapping
 						inner_erase(it);
 						inner_erase(next);
 						inner_insert(a, z, val);
 					}
 				}
 				// right
-				else if (!it->second.start && x > a) {
+				else if (!it->second.start && a < x) {
 					const auto& prev = std::prev(it);
-					if ((x >= z) ||  // inside
-						(x < z && next != m_map.end() && next->first >= z && (x - prev->first) >(z - a)) ||  // overlapping
-						(x < z && next == m_map.end() && (x - prev->first) >(z - a))) {
+					if ((z <= x) ||  // inside
+						(x < z && next != m_map.end() && z <= next->first && (z - a) < (x - prev->first)) ||  // overlapping
+						(x < z && next == m_map.end() && (z - a) < (x - prev->first))) {
 						inner_erase(prev);
 						inner_erase(it);
 						inner_insert(a, z, val);
 					}
 				}
-				else if (!it->second.start && x == a) {
+				else if (!it->second.start && m_map.find(a) != m_map.end()) {
 					if ((next == m_map.end()) ||  // outside
-						(next != m_map.end() && next->first >= z)) { // overlapping
+						(next != m_map.end() && z <= next->first)) { // overlapping
 						inner_insert(a, z, val);
 					}
-					else if (next != m_map.end() && next->first < z && (std::next(next)->first - next->first) >(z - a)) {  // overlapping
+					else if (next != m_map.end() && next->first < z && (z - a ) < (std::next(next)->first - next->first)) {  // overlapping
 						inner_erase(std::next(next));
 						inner_erase(next);
 						inner_insert(a, z, val);
@@ -132,11 +138,11 @@ namespace tech
 			m_is_cache_valid = false;
 			switch (m_mode)
 			{
-			case insert_mode::conservative: return insert_conservative_solid_intervals({ start }, { finish }, { val }, 1);
-			case insert_mode::progressive: return insert_progressive_solid_intervals({ start }, { finish }, { val }, 1);
-			case insert_mode::maximum: return insert_maximum_solid_intervals({ start }, { finish }, { val }, 1);
-			case insert_mode::fluid: return insert_fluid_solid_intervals({ start }, { finish }, { val }, 1);
-			default: return;
+				case insert_mode::conservative: return insert_conservative_solid_intervals({ start }, { finish }, { val }, 1);
+				case insert_mode::progressive: return insert_progressive_solid_intervals({ start }, { finish }, { val }, 1);
+				case insert_mode::maximum: return insert_maximum_solid_intervals({ start }, { finish }, { val }, 1);
+				case insert_mode::fluid: return insert_fluid_solid_intervals({ start }, { finish }, { val }, 1);
+				default: return;
 			};
 		}
 
@@ -147,11 +153,11 @@ namespace tech
 			m_is_cache_valid = false;
 			switch (m_mode)
 			{
-			case insert_mode::conservative: return insert_conservative_solid_intervals(start, finish, vals, n);
-			case insert_mode::progressive: return insert_progressive_solid_intervals(start, finish, vals, n);
-			case insert_mode::maximum:  return insert_maximum_solid_intervals(start, finish, vals, n);
-			case insert_mode::fluid:  return insert_fluid_solid_intervals(start, finish, vals, n);
-			default: return;
+				case insert_mode::conservative: return insert_conservative_solid_intervals(start, finish, vals, n);
+				case insert_mode::progressive: return insert_progressive_solid_intervals(start, finish, vals, n);
+				case insert_mode::maximum:  return insert_maximum_solid_intervals(start, finish, vals, n);
+				case insert_mode::fluid:  return insert_fluid_solid_intervals(start, finish, vals, n);
+				default: return;
 			};
 		}
 
@@ -164,13 +170,14 @@ namespace tech
 		}
 
 		bool contains(const K& key) const {
-			const auto& it = m_map.lower_bound(key);   // O(log(N))
+			const auto& it = m_map.lower_bound(key);			// O(log(N))
+			const bool exist = m_map.find(key) != m_map.end();  // O(log(N))
 
 			if (it == m_map.end() || it == m_map.begin() && key < it->first)
 				return false;
-			else if (it->first == key && it->second.start)
+			else if (exist && it->second.start)
 				return true;
-			else if (it != m_map.begin() && it->first > key && std::prev(it)->second.start)
+			else if (it != m_map.begin() && key < it->first && std::prev(it)->second.start)
 				return true;
 
 			return false;
