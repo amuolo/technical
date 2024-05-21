@@ -48,7 +48,34 @@ namespace tech
 		bool m_is_cache_valid;
 
 		void insert_conservative_solid_intervals(std::vector<K> const& start, std::vector<K> const& finish, std::vector<V> const& vals, int n) {
-			// TODO
+			const auto inner_insert = [&](const K& a, const K& b, const V& val) {
+				const auto result = m_map.insert(std::make_pair(a, feature(true, val)));
+				if (not result.second) {
+					m_map.erase(a);
+					m_map.insert(std::make_pair(a, feature(true, val)));
+				}
+				m_map.insert(std::make_pair(b, feature(false, val)));
+			};
+
+			for (size_t i = 0; i < n; i++) {								// O(n)
+				const K& a = start[i], z = finish[i];
+				const V& val = vals[i];
+				if (z <= a)
+					continue;
+
+				const auto& it = m_map.lower_bound(a);                      // O(log(N))
+
+				if (it == m_map.end()) {
+					inner_insert(a, z, val);
+					continue;
+				}
+
+				const auto& x = it->first;
+
+				if ((it->second.start && z <= x && (it == m_map.begin() || !std::prev(it)->second.start)) ||
+					(m_map.find(a) != m_map.end() && !it->second.start && (std::next(it) == m_map.end() || z <= std::next(it)->first)))
+					inner_insert(a, z, val);
+			}
 		}
 
 		void insert_progressive_solid_intervals(std::vector<K> const& start, std::vector<K> const& finish, std::vector<V> const& vals, int n) {
