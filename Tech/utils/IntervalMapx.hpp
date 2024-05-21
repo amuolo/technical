@@ -182,6 +182,16 @@ namespace tech
 
 			return false;
 		}
+
+		V const& operator[](K const& key) const {
+			auto it = m_map.upper_bound(key);
+			if (it == m_map.begin() || !std::prev(it)->second.start) {
+				return m_valBegin;
+			}
+			else {
+				return std::prev(it)->second.value;
+			}
+		}
 	};
 }
 
