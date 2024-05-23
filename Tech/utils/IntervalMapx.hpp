@@ -93,8 +93,8 @@ namespace tech
 
 				inner_insert(a, z, val);									// O(log(N))
 
-				const auto& newIta = m_map.lower_bound(a);
-				const auto& newItz = m_map.lower_bound(z);
+				const auto& newIta = m_map.lower_bound(a);                  // O(log(N))
+				const auto& newItz = m_map.lower_bound(z);                  // O(log(N))
 
 				if (!aExist && newIta != m_map.begin() && std::prev(newIta)->second.start) 
 					inner_erase(std::prev(newIta));
@@ -105,7 +105,27 @@ namespace tech
 		}
 
 		void insert_fluid_solid_intervals(std::vector<K> const& start, std::vector<K> const& finish, std::vector<V> const& vals, int n) {
-			// TODO
+			for (size_t i = 0; i < n; i++) {								// O(n)
+				const K& a = start[i], z = finish[i];
+				const V& val = vals[i];
+				if (z <= a)
+					continue;
+
+				const auto& ita = m_map.lower_bound(a);                     // O(log(N))
+
+				if (ita == m_map.end()) {
+					inner_insert(a, z, val);
+					continue;
+				}
+
+				const auto& itz = m_map.lower_bound(z);		                // O(log(N))
+				const auto preVal = this->operator[](z);                    // O(log(N))
+				const auto preFeature = feature(preVal != m_valBegin, preVal);
+
+				m_map.erase(ita, itz);										// O(log(N)) + (distance(ita, it))
+
+				inner_insert(a, z, val, &preFeature);						// O(log(N))
+			}
 		}
 
 		void insert_maximum_solid_intervals(std::vector<K> const& start, std::vector<K> const& finish, std::vector<V> const& vals, int n) {
@@ -163,15 +183,13 @@ namespace tech
 			}
 		}
 
-		void inner_insert(const K& a, const K& b, const V& val) {   // O(log(N))
+		void inner_insert(const K& a, const K& b, const V& val, feature const * const close = nullptr) {   // O(log(N))
 			const auto result = m_map.insert(std::make_pair(a, feature(true, val)));
-			const auto previous = m_mode != insert_mode::fluid ? m_valBegin :
-				(result.first == m_map.begin() ? m_valBegin : std::prev(result.first)->second.value);
 			if (not result.second) {
 				m_map.erase(a);
 				m_map.insert(std::make_pair(a, feature(true, val)));
 			}
-			m_map.insert(std::make_pair(b, feature(false, previous)));
+			m_map.insert(std::make_pair(b, close == nullptr ? feature(false, m_valBegin) : *close));
 		};
 
 		void inner_erase(const std::map<K, feature>::iterator& it) {   // O(log(N))
@@ -237,14 +255,12 @@ namespace tech
 			return false;
 		}
 
-		V const& operator[](K const& key) const {
+		V const& operator[](const K& key) const {     // O(log(N))
 			auto it = m_map.upper_bound(key);
-			if (it == m_map.begin() || !std::prev(it)->second.start) {
+			if (it == m_map.begin() || !std::prev(it)->second.start)
 				return m_valBegin;
-			}
-			else {
+			else 
 				return std::prev(it)->second.value;
-			}
 		}
 	};
 }
