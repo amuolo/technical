@@ -11,6 +11,7 @@ namespace tech::calculator
 {
     template <class T>
     T get_greater_common_divisor(T aIn, T bIn) requires(std::is_integral_v<T>) {
+        // Euler algorithm
         auto a = aIn > bIn ? aIn : bIn;
         auto b = aIn > bIn ? bIn : aIn;
         while (b != 0) {
