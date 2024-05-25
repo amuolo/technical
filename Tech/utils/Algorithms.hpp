@@ -9,6 +9,10 @@
 
 namespace tech::algorithms
 {
+    /***************/
+    /*   SORTING   */
+    /***************/
+
     template <class T>
     inline std::vector<size_t> sort_index(const std::vector<T>& v)
     {
@@ -69,6 +73,36 @@ namespace tech::algorithms
             x++;
         });
         return res;
+    }
+
+    /****************/
+    /*   SEQUENCE   */
+    /****************/
+
+    template <typename T>
+    inline std::vector<T> longest_common_subsequence(const std::vector<T>& a, const std::vector<T>& b) {
+
+        size_t n = a.size(), m = b.size(), longestN = std::min(n, m); 
+        std::vector<std::vector<std::vector<T>>> mat (n, std::vector<std::vector<T>>(m));
+        for (size_t i = 0; i < n; i++) {
+            for (size_t j = 0; j < m; j++) {    // O(n * m)
+                if (j != 0)
+                    mat[i][j] = mat[i][j - 1];
+                if (a[i] == b[j]) 
+                    mat[i][j].push_back(a[i]);
+                if (i != 0 && mat[i - 1][j].size() > mat[i][j].size()) 
+                    mat[i][j] = std::move(mat[i - 1][j]);
+            }
+        }
+
+        return mat[n - 1][m - 1];
+    }
+
+    inline std::string longest_common_subsequence(const std::string& a, const std::string& b) {
+        std::vector<char> av(a.begin(), a.end());
+        std::vector<char> bv(b.begin(), b.end());
+        auto r = longest_common_subsequence(av, bv);
+        return std::string(r.begin(), r.end());
     }
 }
 

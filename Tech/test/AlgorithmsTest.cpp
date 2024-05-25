@@ -63,3 +63,30 @@ BOOST_AUTO_TEST_CASE(sort_nlogn_counting) {
 	BOOST_TEST(bz == br);
 }
 
+
+
+/****************/
+/*   SEQUENCE   */
+/****************/
+
+BOOST_AUTO_TEST_CASE(longest_common_subsequence_1) {
+
+	std::string a1 = "afgh";
+	std::string b1 = "fgahlm";
+	std::string r1 = tech::algorithms::longest_common_subsequence(a1, b1);
+
+	BOOST_TEST(r1 == "fgh");
+
+	std::string a2 = "AquaVitae";
+	std::string b2 = "AruTaVae";
+	std::string r2 = tech::algorithms::longest_common_subsequence(a2, b2);
+
+	BOOST_TEST(r2 == "AuaVae");
+
+	std::string a3 = "betterte";
+	std::string b3 = "ter";
+	std::string r3 = tech::algorithms::longest_common_subsequence(a3, b3);
+
+	BOOST_TEST(r3 == "ter");
+}
+
