@@ -82,16 +82,21 @@ namespace tech::algorithms
     template <typename T>
     inline std::vector<T> longest_common_subsequence(const std::vector<T>& a, const std::vector<T>& b) {
 
-        size_t n = a.size(), m = b.size(), longestN = std::min(n, m); 
+        size_t n = a.size(), m = b.size(); 
         std::vector<std::vector<std::vector<T>>> mat (n, std::vector<std::vector<T>>(m));
         for (size_t i = 0; i < n; i++) {
+            bool init = true;
             for (size_t j = 0; j < m; j++) {    // O(n * m)
                 if (j != 0)
                     mat[i][j] = mat[i][j - 1];
-                if (a[i] == b[j]) 
+                if (a[i] == b[j] && init) {
                     mat[i][j].push_back(a[i]);
-                if (i != 0 && mat[i - 1][j].size() > mat[i][j].size()) 
+                    init = false;
+                }
+                if (i != 0 && mat[i - 1][j].size() >= mat[i][j].size()) {
                     mat[i][j] = std::move(mat[i - 1][j]);
+                    init = true;
+                }
             }
         }
 

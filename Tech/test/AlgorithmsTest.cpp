@@ -88,5 +88,17 @@ BOOST_AUTO_TEST_CASE(longest_common_subsequence_1) {
 	std::string r3 = tech::algorithms::longest_common_subsequence(a3, b3);
 
 	BOOST_TEST(r3 == "ter");
+
+	std::string a4 = "faPkdmElxiyjROOhuFHbaKpmmVAXQcPTiwtCiJC";
+	std::string b4 = "BVObzwbRESpqhpvjiDGmlVJ";
+	std::string r4 = tech::algorithms::longest_common_subsequence(a4, b4);
+
+	BOOST_TEST(r4 == "ObpmVJ");
+
+	std::string a5 = "QivcjGDoqoZKuiDcFHqRBdtuPRrisYZoSyQuERxvPiYZNfbWTZHqwLiCeebfYSAgSZiOc";
+	std::string b5 = "OAAeqEXEmijuQqDEDYBlklSWURxcLxHlFBYuWSWMYHWJVHXigdjohAundoufZ";
+	std::string r5 = tech::algorithms::longest_common_subsequence(a5, b5);
+
+	BOOST_TEST(r5 == "ijqDcFBuSYWHifZ");
 }
 
