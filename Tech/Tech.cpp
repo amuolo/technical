@@ -1,7 +1,7 @@
 ﻿#include "utils/StandardLibs.hpp"
 #include "utils/InputOutput.hpp"
 
-#include "utils/AlgorithmComplexity.hpp"
+#include "utils/Complexity.hpp"
 
 int main()
 {
@@ -10,25 +10,29 @@ int main()
 	using ld = long double;
 	using ull = unsigned long long;
 
-	ull i = 0;
-	auto x = std::vector<ull>();
-	x.reserve(size_t(100000000));
+	std::complex<ld> x = 1234;
+	ull n = 1;
+
+	auto fun = [&]() {
+		for (ull i = 0; i < std::pow((ld)2., (ld)n); i++)
+			x = x * std::exp(std::complex<ld>(0.0, 1.0) * (ld)std::acos(-1) / (ld)1234.);
+		};
 
 	auto study = tech::algorithm_complexity(
-		[&]() { x.push_back(++i); },
-		[&]() { x.push_back(++i); },
-		[&]() { return x.size(); },
-		[&]() { x.clear(); });
+		[&]() { fun(); },
+		[&]() { n++; },
+		[&]() { return n; },
+		[&]() { n = 0; });
 
 	ull attempt = 0;
 	do {
-		attempt++;
+		std::cout << ++attempt << std::endl;
 		study.run_analysis();
-	} 
+	} while (boost::algorithm::contains(study.get_result(), "^n"));
 	//while (study.get_result() == "O(n^2)");
 	//while (study.get_result() == "O(1)");
 	//while (boost::algorithm::contains(study.get_result(), "log"))
-	while ((study.get_result() == "O(1)" || boost::algorithm::contains(study.get_result(), "O(log")));
+	//while ((study.get_result() == "O(1)" || boost::algorithm::contains(study.get_result(), "O(log")));
 
 	std::cout << std::endl << attempt << "   " << study.get_result() << std::endl << std::endl;
 

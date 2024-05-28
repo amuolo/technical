@@ -4,7 +4,7 @@
 
 #include "../utils/StandardLibs.hpp"
 #include "../utils/InputOutput.hpp"
-#include "../utils/AlgorithmComplexity.hpp"
+#include "../utils/Complexity.hpp"
 
 #include <boost/test/included/unit_test.hpp>
 #include <boost/algorithm/string.hpp>

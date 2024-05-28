@@ -4,10 +4,10 @@
 
 # Add source to this project's executable.
 add_executable (Tech "Tech.cpp" "../vcpkg.json" "../vcpkg-configuration.json"      
-"utils/AlgorithmComplexity.hpp" 
 "utils/Algorithms.hpp"
 "utils/Arithmetics.hpp" 
 "utils/Calculator.hpp"
+"utils/Complexity.hpp" 
 "utils/Concepts.hpp"
 "utils/InputOutput.hpp"  
 "utils/IntervalMap.hpp" 
