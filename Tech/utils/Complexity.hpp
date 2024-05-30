@@ -57,7 +57,11 @@ namespace tech
 		ll m_timeMin = (ll)(1000000);
 		ll m_timeIn = (ll)(100);
 
-		std::function<std::chrono::steady_clock::time_point()> m_get_time_now = []() { return std::chrono::high_resolution_clock::now(); };
+		std::function<std::chrono::steady_clock::time_point()> m_get_time_now 
+			= []() { return std::chrono::high_resolution_clock::now(); };
+
+		std::function<ll(std::chrono::steady_clock::time_point)> m_get_time_elapsed 
+			= [&](std::chrono::steady_clock::time_point t0) { return std::chrono::duration_cast<std::chrono::microseconds>(m_get_time_now() - t0).count(); };
 
 		void init_parameters() {
 			auto n0 = m_get_n();
@@ -74,6 +78,16 @@ namespace tech
 			if (m_get_n() != 0)
 				throw std::exception("algorithm_complexity: reset function not working properly.");
 		};
+
+		bool is_super_complex(std::string result) {
+			std::vector<std::string> items = { "O(n^10)", "O(n^11)", "O(n^12)", "O(2^n)", "O(3^n)", "O(4^n)" };
+			return std::any_of(items.begin(), items.end(), [&](const auto& x) { return x == result; });
+		}
+
+		bool is_complex(std::string result) {
+			std::vector<std::string> items = { "O(n^2)", "O(n^3)", "O(n^4)", "O(n^5)", "O(n^6)", "O(n^7)", "O(n^8)", "O(n^9)" };
+			return std::any_of(items.begin(), items.end(), [&](const auto& x) { return x == result; });
+		}
 
 		void init_slopes() {
 			m_slopes.clear();
@@ -207,15 +221,13 @@ namespace tech
 				m_benchmark.clear();
 				init_parameters();
 				calibrate();
-
 				auto t0 = m_get_time_now();
-				auto get_time_elapsed = [&]() { return std::chrono::duration_cast<std::chrono::microseconds>(m_get_time_now() - t0).count(); };
 
-				while (m_benchmark.size() < 20 || get_time_elapsed() < m_timeMin) {
+				while (m_benchmark.size() < 20 || m_get_time_elapsed(t0) < m_timeMin) {
 					l n = m_get_n();
 					m_benchmark.insert(std::make_pair(m_get_n(), m_eval_benchmark()));
 
-					if (get_time_elapsed() > m_timeOut) {
+					if (m_get_time_elapsed(t0) > m_timeOut) {
 						m_status = "max time exceeded";
 						break;
 					}
@@ -230,9 +242,9 @@ namespace tech
 
 					if (m_benchmark.size() > 3) {
 						eval_results();
-						if (boost::algorithm::contains(m_result, "^n"))
+						if (is_super_complex(m_result))
 							newN = n + 1;
-						else if (boost::algorithm::contains(m_result, "n^"))
+						else if (is_complex(m_result))
 							newN = n + std::max(l(1), n / 3);
 					}
 
