@@ -6,6 +6,7 @@
 add_executable (Tech "Tech.cpp" "../vcpkg.json" "../vcpkg-configuration.json"      
 "utils/Algorithms.hpp"
 "utils/Arithmetics.hpp" 
+"utils/Caching.hpp"
 "utils/Calculator.hpp"
 "utils/Complexity.hpp" 
 "utils/Concepts.hpp"
